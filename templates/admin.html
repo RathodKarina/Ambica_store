@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 style="text-align: center; margin-bottom: 3rem;">
+    {% if current_user.username == 'admin' %}
+        Admin Dashboard
+    {% else %}
+        Employee Dashboard
+    {% endif %}
+</h2>
+
+<div class="products-grid" style="max-width: 1000px; margin: 0 auto;">
+    
+    <div class="glass-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 3rem 2rem;">
+        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Products</h3>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Manage your store catalog</p>
+        <a href="/admin/products" class="btn" style="width: 100%;">View Products</a>
+    </div>
+
+    <div class="glass-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 3rem 2rem;">
+        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Orders</h3>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Process and track orders</p>
+        <a href="/admin/orders" class="btn" style="width: 100%;">View Orders</a>
+    </div>
+
+    <div class="glass-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 3rem 2rem;">
+        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Customers</h3>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">View your customer list</p>
+        <a href="/admin/customers" class="btn" style="width: 100%;">View Customers</a>
+    </div>
+
+    {% if current_user.username == 'admin' %}
+    <div class="glass-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 3rem 2rem;">
+        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Settings</h3>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Manage payment QR code</p>
+        <a href="/admin/settings" class="btn" style="width: 100%;">Store Settings</a>
+    </div>
+
+    <div class="glass-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 3rem 2rem;">
+        <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Staff</h3>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Manage your employees</p>
+        <a href="/admin/employees" class="btn" style="width: 100%;">View Staff List</a>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

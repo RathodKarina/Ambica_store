@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 style="text-align: center;">Edit Product</h2>
+<form method="POST" enctype="multipart/form-data">
+    <label for="name" style="color: var(--text-muted); font-size: 0.9rem;">Product Name</label>
+    <input name="name" id="name" placeholder="Product Name" value="{{ product.name }}" required>
+    
+    <label for="price" style="color: var(--text-muted); font-size: 0.9rem;">Price (₹)</label>
+    <input name="price" id="price" placeholder="Price (₹)" type="number" step="0.01" value="{{ product.price }}" required>
+    
+    <label for="image" style="color: var(--text-muted); font-size: 0.9rem;">Product Image (Leave blank to keep current image)</label>
+    <input name="image" id="image" type="file" accept="image/*" style="cursor: pointer; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px dashed var(--accent);">
+    
+    {% if product.image_url %}
+    <p style="text-align: left; color: var(--text-muted); font-size: 0.8rem; margin-top: -0.5rem; margin-bottom: 1rem;">Current Image: 
+        <img src="{{ product.image_url }}" alt="Current Image" style="max-height: 50px; vertical-align: middle; margin-left: 10px;">
+    </p>
+    {% endif %}
+
+    <label for="description" style="color: var(--text-muted); font-size: 0.9rem;">Description</label>
+    <textarea name="description" id="description" placeholder="Product Description..." required style="background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: white; padding: 1rem; border-radius: 8px; font-family: inherit; font-size: 1rem; min-height: 100px; transition: border-color 0.3s ease; width: 100%; box-sizing: border-box; margin-bottom: 1.5rem;">{{ product.description }}</textarea>
+    
+    <button type="submit" class="btn">Update Product</button>
+    <div style="text-align: center; margin-top: 1rem;">
+        <a href="/admin/products" style="color: var(--text-muted); text-decoration: none;">⬅ Cancel</a>
+    </div>
+</form>
+
+{% endblock %}

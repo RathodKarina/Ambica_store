@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 style="text-align: center;">Add New Product</h2>
+<form method="POST" enctype="multipart/form-data">
+    <input name="name" placeholder="Product Name" required>
+    <input name="price" placeholder="Price (₹)" type="number" step="0.01" required>
+    <input name="image" type="file" accept="image/*" required style="cursor: pointer; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px dashed var(--accent);">
+    <textarea name="description" placeholder="Product Description..." required style="background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); color: white; padding: 1rem; border-radius: 8px; font-family: inherit; font-size: 1rem; min-height: 100px; transition: border-color 0.3s ease;"></textarea>
+    
+    <button type="submit" class="btn">Add Product</button>
+    <div style="text-align: center; margin-top: 1rem;">
+        <a href="/admin/products" style="color: var(--text-muted); text-decoration: none;">⬅ Cancel</a>
+    </div>
+</form>
+
+{% endblock %}

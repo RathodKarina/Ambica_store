@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="text-align: left; margin-bottom: 1rem;">
+    <a href="/admin" class="btn-outline">⬅ Back to Dashboard</a>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>Staff Members</h2>
+    <a href="/admin/add_employee" class="btn">Add New Employee</a>
+</div>
+
+<style>
+    .admin-row {
+        border-left: 4px solid var(--accent) !important;
+    }
+</style>
+<div style="max-width: 800px; margin: 0 auto 3rem auto;">
+    {% for user in employees %}
+        <div class="glass-card {{ 'admin-row' if user.username == 'admin' else '' }}" style="margin-bottom: 1rem; padding: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h4 style="margin: 0; font-size: 1.2rem; color: var(--text-main);">
+                    {{ user.username }} 
+                    {% if user.username == 'admin' %}
+                        <span style="font-size: 0.8rem; background: var(--accent); color: white; padding: 0.1rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; vertical-align: middle;">Head Admin</span>
+                    {% endif %}
+                </h4>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.4rem;">Phone: {{ user.phone | default('Not provided', true) }}</p>
+            </div>
+            <div>
+                {% if user.username != 'admin' %}
+                    <span style="color: rgba(255,255,255,0.5); font-size: 0.9rem;">Store Staff</span>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

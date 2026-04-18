@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="text-align: left; margin-bottom: 1rem;">
+    <a href="/admin" class="btn-outline">⬅ Back to Dashboard</a>
+</div>
+<h2>All Customers</h2>
+
+<div style="max-width: 800px; margin: 0 auto 3rem auto;">
+    {% set customer_count = 0 %}
+    {% for user in users %}
+        {% if not user.is_admin %}
+            <div class="glass-card" style="margin-bottom: 1rem; padding: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main);">{{ user.username|title }}</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">Phone: {{ user.phone or 'Not provided' }}</p>
+                </div>
+                <div>
+                    <span style="color: var(--accent); font-weight: bold;">{{ user.orders|length }} Orders</span>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

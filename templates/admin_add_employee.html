@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div style="max-width: 500px; margin: 0 auto;">
+    <div style="text-align: left; margin-bottom: 1rem;">
+        <a href="/admin" class="btn-outline">⬅ Back to Dashboard</a>
+    </div>
+    
+    <div class="glass-card" style="padding: 2.5rem;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Add Employee</h2>
+        
+        <form method="POST" action="/admin/add_employee">
+            <div style="margin-bottom: 1.5rem;">
+                <label for="secret_key" style="color: var(--text-muted); font-size: 0.9rem;">Employee Secret Key <span style="color: var(--danger);">*</span></label>
+                <input type="password" id="secret_key" name="secret_key" placeholder="Enter secure admin secret key" required style="width: 100%; border: 1px dashed var(--danger);">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="username" style="color: var(--text-muted); font-size: 0.9rem;">Employee Username <span style="color: var(--accent);">*</span></label>
+                <input type="text" id="username" name="username" placeholder="e.g. jdoe_staff" required style="width: 100%;">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="phone" style="color: var(--text-muted); font-size: 0.9rem;">Phone Number</label>
+                <input type="text" id="phone" name="phone" placeholder="(Optional)" style="width: 100%;">
+            </div>
+            
+            <div style="margin-bottom: 2rem;">
+                <label for="password" style="color: var(--text-muted); font-size: 0.9rem;">Account Password <span style="color: var(--accent);">*</span></label>
+                <input type="password" id="password" name="password" placeholder="Create a strong password" required style="width: 100%;">
+            </div>
+            
+            <button type="submit" class="btn" style="width: 100%;">Create Employee Account</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

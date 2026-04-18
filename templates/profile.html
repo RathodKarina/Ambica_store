@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div style="max-width: 800px; margin: 0 auto;">
+    <h2 style="text-align: center; margin-bottom: 2rem;">Your Order History</h2>
+
+    {% if not orders %}
+    <div class="glass-card" style="text-align: center;">
+        <p style="color: var(--text-muted); font-size: 1.2rem;">You haven't placed any orders yet.</p>
+        <br>
+        <a href="/products" class="btn">Start Shopping</a>
+    </div>
+    {% else %}
+        {% for order in orders %}
+        <div class="glass-card" style="margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <h3 style="font-size: 1.25rem;">Order #{{ order.id }}</h3>
+                    <p style="color: var(--accent); font-size: 0.9rem; margin-top: 0.2rem; text-transform: capitalize;">Payment: {{ order.payment_method }}</p>
+                </div>
+                <p style="color: var(--text-muted);">{{ order.date_ordered.strftime('%d %b %Y, %H:%M') }}</p>
+            </div>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem;">
+                <tr style="text-align: left; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <th style="padding: 0.5rem 0;">Item</th>
+                    <th style="padding: 0.5rem 0;">Price</th>
+                    <th style="padding: 0.5rem 0;">Qty</th>
+                    <th style="padding: 0.5rem 0; text-align: right;">Total</th>
+                </tr>
+                {% for item in order.items %}
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td style="padding: 0.75rem 0;">{{ item.product.name }}</td>
+                    <td style="padding: 0.75rem 0;">₹{{ item.price_at_purchase }}</td>
+                    <td style="padding: 0.75rem 0;">{{ item.quantity }}</td>
+                    <td style="padding: 0.75rem 0; text-align: right;">₹{{ item.price_at_purchase * item.quantity }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                <div style="max-width: 60%; text-align: left;">
+                    {% if order.delivery_address %}
+                    <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 0.25rem;">Delivery Details:</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4; margin-bottom: 0.5rem;">{{ order.delivery_address }}</p>
+                    {% endif %}
+                    <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4;">
+                        <strong>Name:</strong> {{ order.user.username|title }}<br>
+                        <strong>Phone:</strong> {{ order.user.phone or 'Not provided' }}
+                    </p>
+                </div>
+                <div style="text-align: right;">
+                    <h4 style="font-size: 1.25rem; font-weight: 500;">Order Total: <span style="color: var(--accent); font-weight: 700; font-size: 1.5rem;">₹{{ order.total_price }}</span></h4>
+                    {% if order.status == 'Cancelled' %}
+                    <div style="margin-top: 1rem; text-align: right;">
+                        <span style="color: var(--danger); font-weight: bold; border: 1px solid var(--danger); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">ORDER CANCELLED</span>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; max-width: 200px;"><strong>Reason:</strong> {{ order.cancellation_reason }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock %}

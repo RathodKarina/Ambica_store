@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 style="text-align: center; margin-bottom: 2rem;">Store Settings</h2>
+
+<div style="text-align: left; margin-bottom: 1rem;">
+    <a href="/admin" class="btn-outline">⬅ Back to Dashboard</a>
+</div>
+
+<div class="glass-card" style="max-width: 500px; margin: 0 auto; text-align: center; padding: 2rem;">
+    <h3 style="margin-bottom: 1rem;">Update Payment QR Code</h3>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">This QR code will be shown to customers when they select "Online Payment" during checkout.</p>
+    
+    <div style="margin-bottom: 2rem;">
+        {% if qr_exists %}
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Current active QR Code:</p>
+            <img src="/static/images/payment_qr.png" alt="Current QR Code" style="width: 150px; height: 150px; object-fit: contain; border: 1px dashed var(--glass-border); border-radius: 8px; padding: 0.5rem; background: rgba(0,0,0,0.1);">
+            
+            <form method="POST" action="/admin/settings/delete" style="margin-top: 1.5rem; width: 100%;">
+                <button type="submit" class="btn-outline" style="width: 100%; border-color: var(--danger); color: var(--danger);">Delete Old QR Code</button>
+            </form>
+            
+            <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Or overwrite it with a new one:</p>
+        {% else %}
+            <p style="font-size: 0.9rem; color: var(--danger); margin-bottom: 0.5rem;">⚠️ No QR Code Currently Active</p>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Customers cannot pay online until a new code is uploaded.</p>
+        {% endif %}
+    </div>
+
+    <form method="POST" action="/admin/settings" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+        <input type="file" name="qr_image" accept="image/*" required style="width: 100%; border: 1px solid var(--glass-border); color: var(--text-main); background: rgba(255,255,255,0.6); border-radius: 8px; padding: 0.8rem;">
+        <button type="submit" class="btn" style="width: 100%;">Upload New QR Code</button>
+    </form>
+</div>
+
+{% endblock %}

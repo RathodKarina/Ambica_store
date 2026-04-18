@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="text-align: left; margin-bottom: 1rem;">
+    <a href="/admin" class="btn-outline">⬅ Back to Dashboard</a>
+</div>
+<h2>Product Management</h2>
+
+<div style="text-align: right; margin-bottom: 2rem;">
+    <a href="/admin/add" class="btn">Add New Product</a>
+</div>
+
+<div style="max-width: 800px; margin: 0 auto 3rem auto;">
+    {% for p in products %}
+    <div class="admin-item glass-card">
+        <div>
+            <h3 style="margin-bottom: 0.5rem;">{{ p.name }}</h3>
+            <p style="color: var(--accent); font-weight: 600;">₹{{ p.price }}</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <a href="/admin/edit/{{ p.id }}" class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
+            <a href="/admin/delete/{{ p.id }}" class="btn-danger" onclick="return confirm('Are you sure you want to delete this product?')" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Delete</a>
+        </div>
+    </div>
+    {% else %}
+    <p style="text-align: center; color: var(--text-muted);">No products found.</p>
+    {% endfor %}
+</div>
+{% endblock %}
