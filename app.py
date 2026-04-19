@@ -405,7 +405,7 @@ def seed_database():
         admin_user = User(
             username='admin',
             phone='0000000000',
-            password=generate_password_hash('ambica123'),
+            password=generate_password_hash('admin123'),
             is_admin=True
         )
         db.session.add(admin_user)
