@@ -324,15 +324,14 @@ def admin_add_product():
     if not current_user.is_admin:
         return "Access denied", 403
     if request.method == 'POST':
+        import base64
         image_file = request.files.get('image')
         image_path = ''
         if image_file and image_file.filename != '':
-            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-            filename = secure_filename(image_file.filename)
-            save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            image_file.save(save_path)
-            # Use relative URL for frontend templates
-            image_path = '/static/uploads/' + filename
+            image_data = image_file.read()
+            encoded_image = base64.b64encode(image_data).decode('utf-8')
+            mime_type = image_file.mimetype
+            image_path = f"data:{mime_type};base64,{encoded_image}"
             
         product = Product(
             name=request.form['name'],
@@ -367,17 +366,17 @@ def admin_edit_product(id):
     product = Product.query.get_or_404(id)
     
     if request.method == 'POST':
+        import base64
         product.name = request.form['name']
         product.price = float(request.form['price'])
         product.description = request.form.get('description', '')
         
         image_file = request.files.get('image')
         if image_file and image_file.filename != '':
-            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-            filename = secure_filename(image_file.filename)
-            save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            image_file.save(save_path)
-            product.image_url = '/static/uploads/' + filename
+            image_data = image_file.read()
+            encoded_image = base64.b64encode(image_data).decode('utf-8')
+            mime_type = image_file.mimetype
+            product.image_url = f"data:{mime_type};base64,{encoded_image}"
             
         db.session.commit()
         flash("Product updated successfully!", "success")
