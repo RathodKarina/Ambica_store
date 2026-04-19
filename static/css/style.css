@@ -2,7 +2,7 @@
 
 /* Color Variables */
 :root {
-  --bg-color: #f8fafc;
+  --bg-color: #fdfaf6;
   --glass-bg: rgba(255, 255, 255, 0.65);
   --glass-border: rgba(255, 255, 255, 0.4);
   --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
@@ -17,7 +17,7 @@
 
 body {
   font-family: 'Outfit', sans-serif;
-  background: linear-gradient(135deg, var(--bg-color) 0%, #e2e8f0 100%);
+  background: linear-gradient(135deg, var(--bg-color) 0%, #ecdac5 100%);
   color: var(--text-main);
   min-height: 100vh;
   position: relative;

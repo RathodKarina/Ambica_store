@@ -3,8 +3,13 @@
 
 <div style="max-width: 700px; margin: 3rem auto; text-align: center;">
     <div style="font-size: 4rem; color: #10B981; margin-bottom: 1rem;">&#10004;</div>
+    {% if order.payment_method == 'cash' %}
+    <h2 style="margin-bottom: 0.5rem; font-size: 2.5rem;">Order Placed Successfully!</h2>
+    <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 3rem;">Please pay on delivery. Thank you!</p>
+    {% else %}
     <h2 style="margin-bottom: 0.5rem; font-size: 2.5rem;">Payment Successful!</h2>
     <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 3rem;">Thank you for your purchase.</p>
+    {% endif %}
 
     <div class="glass-card" style="text-align: left; padding: 2.5rem;">
         <h3 style="border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; margin-bottom: 1.5rem; font-size: 1.5rem;">Order Receipt (Order #{{ order.id }})</h3>
@@ -41,7 +46,9 @@
                 <p style="font-weight: 500; font-size: 0.95rem; line-height: 1.5;">{{ order.delivery_address }}</p>
             </div>
             <div style="text-align: right;">
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.2rem;">Total Amount Paid</p>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.2rem;">
+                    {% if order.payment_method == 'cash' %}Total Amount to Pay{% else %}Total Amount Paid{% endif %}
+                </p>
                 <h3 style="color: var(--accent); font-size: 2rem; margin: 0;">₹{{ order.total_price }}</h3>
             </div>
         </div>

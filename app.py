@@ -53,6 +53,9 @@ def home():
 # ---------------- REGISTER ----------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect('/products')
+        
     if request.method == 'POST':
         # Assign admin role if username is exactly 'admin'
         is_admin = (request.form['username'] == 'admin')
@@ -71,8 +74,8 @@ def register():
             return redirect('/login')
         except IntegrityError:
             db.session.rollback()
-            flash("Username already exists. Please try another.", "error")
-            return redirect('/register')
+            flash("Account already exists! You simply need to login.", "success")
+            return redirect('/login')
         except Exception as e:
             db.session.rollback()
             flash(f"An error occurred: {str(e)}", "error")
@@ -82,6 +85,9 @@ def register():
 # ---------------- LOGIN ----------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect('/products')
+        
     if request.method == 'POST':
         user = User.query.filter_by(username=request.form['username']).first()
 
