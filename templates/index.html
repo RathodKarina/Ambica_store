@@ -11,32 +11,6 @@
     </div>
 </div>
 
-<!-- Featured/Recent Products Section -->
-<div style="max-width: 1200px; margin: 4rem auto 2rem auto; padding: 0 2rem; position: relative; z-index: 20;">
-    <h3 style="text-align: center; margin-bottom: 2rem; font-size: 2rem; color: var(--text-main);">Recently Added</h3>
-    <div class="products-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
-        {% for p in recent_products %}
-        <div class="product" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem;">
-            <div>
-                {% if p.image_url %}
-                <div style="width: 100%; aspect-ratio: 4/3; background: rgba(0,0,0,0.05); border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center;">
-                    <img src="{{ p.image_url }}" alt="{{ p.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                </div>
-                {% endif %}
-                <h4 style="margin-bottom: 0.5rem; font-size: 1.2rem; color: var(--text-main);">{{ p.name }}</h4>
-                <p style="font-size: 0.9rem; font-weight: 300; color: var(--text-muted); margin-bottom: 1rem;">{{ p.description[:50] }}...</p>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <p style="color: var(--accent); font-weight: 600; font-size: 1.1rem; margin: 0;">₹{{ p.price }}</p>
-                <a href="/product/{{ p.id }}" class="btn" style="padding: 0.4rem 1rem; font-size: 0.9rem;">View</a>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    
-    <div style="text-align: center; margin-top: 3rem;">
-        <a href="/products" class="btn-outline">View All Products</a>
-    </div>
-</div>
+
 
 {% endblock %}

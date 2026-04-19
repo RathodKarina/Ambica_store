@@ -5,7 +5,7 @@
 </div>
 <h2>All Customer Orders</h2>
 
-<div style="max-width: 800px; margin: 0 auto;">
+<div id="orders-container" style="max-width: 800px; margin: 0 auto;">
     {% if not orders %}
     <div class="glass-card" style="text-align: center;">
         <p style="color: var(--text-muted); font-size: 1.2rem;">No orders have been placed yet.</p>
@@ -72,5 +72,18 @@ function promptCancel(form) {
     form.querySelector('.reason-input').value = reason || 'No reason provided by admin';
     return true;
 }
+
+// Auto-refresh the orders container every 3 seconds to make it "live"
+setInterval(() => {
+    fetch(window.location.href)
+        .then(response => response.text())
+        .then(html => {
+            let parser = new DOMParser();
+            let doc = parser.parseFromString(html, "text/html");
+            let newOrders = doc.querySelector('#orders-container').innerHTML;
+            document.querySelector('#orders-container').innerHTML = newOrders;
+        })
+        .catch(err => console.log('Live update failed:', err));
+}, 3000);
 </script>
 {% endblock %}
