@@ -11,13 +11,15 @@
             <a href="/register" class="btn-outline" style="margin-left: 1rem;">Join Now</a>
         </div>
     </div>
-    <div style="text-align: center; margin-top: auto; padding-top: 4rem; animation: bounceIn 2s infinite;">
-        <span style="font-size: 2rem; color: var(--accent); opacity: 0.8;">&#8595; Scroll to Discover</span>
+    <div style="text-align: center; margin-top: auto; padding-top: 3rem;">
+        <a href="#overview" style="background: rgba(255,255,255,0.85); color: var(--text-main); font-size: 1rem; padding: 0.8rem 2rem; border-radius: 50px; display: inline-flex; align-items: center; gap: 0.8rem; text-decoration: none; font-weight: 600; box-shadow: var(--glass-shadow); backdrop-filter: blur(10px); animation: bounceIn 2s infinite; border: 1px solid var(--glass-border); transition: all 0.3s ease;">
+            Scroll to Discover <span style="font-size: 1.2rem; color: var(--accent);">&#8595;</span>
+        </a>
     </div>
 </div>
 
 <!-- Overview Section -->
-<section class="section-main">
+<section id="overview" class="section-main">
     <div class="glass-card" style="text-align: center; padding: 3rem 2rem;">
         <h2 class="section-title">The Ambica Heritage</h2>
         <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-main); max-width: 800px; margin: 0 auto;">
@@ -53,39 +55,7 @@
     </div>
 </section>
 
-<!-- Featured Products (recent_products) -->
-{% if recent_products %}
-<section class="section-main">
-    <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">New Arrivals</h2>
-    <div class="products-grid">
-        {% for p in recent_products %}
-        <div class="product" style="display: flex; flex-direction: column; justify-content: space-between;">
-            <div>
-                {% if p.image_url %}
-                <div style="width: 100%; aspect-ratio: 4/3; background: rgba(0,0,0,0.05); border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center;">
-                    <img src="{{ p.image_url }}" alt="{{ p.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                </div>
-                {% endif %}
-                <h3>{{ p.name }}</h3>
-                <p style="font-size: 1rem; font-weight: 300;">{{ p.description[:60] }}...</p>
-            </div>
-            <div>
-                <p style="color: var(--accent); font-weight: 600; font-size: 1.25rem;">₹{{ p.price }}</p>
-                <div style="display: flex; gap: 10px; margin-top: 1rem;">
-                    <a href="/product/{{ p.id }}" class="btn-outline" style="flex: 1;">Details</a>
-                    {% if not current_user.is_authenticated or not current_user.is_admin %}
-                    <a href="/add_to_cart/{{ p.id }}" class="btn" style="flex: 1;">Add Cart</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <div style="text-align: center; margin-top: 3rem;">
-        <a href="/products" class="btn">View All Products</a>
-    </div>
-</section>
-{% endif %}
+
 
 <!-- Services Section -->
 <section class="section-main">
