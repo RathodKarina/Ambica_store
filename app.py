@@ -401,6 +401,16 @@ def admin_delete_order(id):
     return redirect('/admin/orders')
 
 def seed_database():
+    if User.query.filter_by(username='admin').first() is None:
+        admin_user = User(
+            username='admin',
+            phone='0000000000',
+            password=generate_password_hash('ambica123'),
+            is_admin=True
+        )
+        db.session.add(admin_user)
+        db.session.commit()
+        
     if Product.query.count() == 0:
         products = [
             Product(name="Premium Bansuri", price=2500.00, description="Authentic hand-made bamboo flute for classical Indian music.", image_url="/static/images/Bansuri.png"),
