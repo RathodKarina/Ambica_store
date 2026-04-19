@@ -18,7 +18,7 @@ class Product(db.Model):
     name = db.Column(db.String(150), nullable=False)
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text, nullable=True)
-    image_url = db.Column(db.String(300), nullable=True)
+    image_url = db.Column(db.Text, nullable=True)
 
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
