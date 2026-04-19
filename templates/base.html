@@ -7,34 +7,31 @@
     <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 
-<nav>
-    <a href="/">Home</a>
-    <a href="/products">Store</a>
-    {% if current_user.is_authenticated %}
-        {% if not current_user.is_admin %}
-        <a href="/cart">Cart</a>
-        {% endif %}
-    {% else %}
-        <a href="/cart">Cart</a>
-    {% endif %}
-    
-    {% if current_user.is_authenticated %}
-        {% if current_user.is_admin %}
-            {% if current_user.username == 'admin' %}
-                <a href="/admin" style="color: var(--danger); font-weight: 700;">Admin Dashboard</a>
-            {% else %}
-                <a href="/admin" style="color: var(--danger); font-weight: 700;">Employee Dashboard</a>
+<nav style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+    <!-- Left Side: Login / Register / Logout -->
+    <div style="display: flex; gap: 1rem; align-items: center;">
+        {% if current_user.is_authenticated %}
+            <a href="/logout" class="btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px;">Logout</a>
+            {% if current_user.is_admin %}
+                {% if current_user.username == 'admin' %}
+                    <a href="/admin" style="color: var(--danger); font-weight: 700;">Admin Dashboard</a>
+                {% else %}
+                    <a href="/admin" style="color: var(--danger); font-weight: 700;">Employee Dashboard</a>
+                {% endif %}
             {% endif %}
+        {% else %}
+            <a href="/login" class="btn-outline" style="padding: 0.5rem 1rem; border-radius: 8px;">Login</a>
+            <a href="/register" class="btn" style="padding: 0.5rem 1rem; border-radius: 8px;">Register</a>
         {% endif %}
-    {% endif %}
-    {% if current_user.is_authenticated %}
-        <a href="/logout" class="btn-outline">Logout</a>
-    {% else %}
-        <a href="/login" class="btn-outline">Login</a>
-        <a href="/register" class="btn">Register</a>
-    {% endif %}
+    </div>
+
+    <!-- Right Side: Store Links -->
+    <div style="display: flex; gap: 1.5rem; align-items: center;">
+        <a href="/">Home</a>
+        <a href="/products">Store</a>
+    </div>
 </nav>
 
 <main class="container">
@@ -56,6 +53,12 @@
     {% endwith %}
 
     {% block content %}{% endblock %}
+    
+    {% if current_user.is_authenticated and not current_user.is_admin and cart_count > 0 %}
+    <a href="/cart" class="floating-cart">
+        🛒 View Cart ({{ cart_count }})
+    </a>
+    {% endif %}
 </main>
 
 <!-- JS -->

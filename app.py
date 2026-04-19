@@ -35,6 +35,14 @@ def enforce_single_session():
             flash("You have been logged out because your account was accessed from another device.", "error")
             return redirect(url_for('login'))
 
+@app.context_processor
+def inject_cart_count():
+    cart_count = 0
+    if current_user.is_authenticated:
+        cart_items = Cart.query.filter_by(user_id=current_user.id).all()
+        cart_count = sum(item.quantity for item in cart_items)
+    return dict(cart_count=cart_count)
+
 # ---------------- HOME ----------------
 @app.route('/')
 def home():
