@@ -401,6 +401,10 @@ def admin_delete_order(id):
     return redirect('/admin/orders')
 
 def seed_database():
+    import random
+    from datetime import datetime, timedelta
+
+    # Seed Admin User
     if User.query.filter_by(username='admin').first() is None:
         admin_user = User(
             username='admin',
@@ -411,6 +415,20 @@ def seed_database():
         db.session.add(admin_user)
         db.session.commit()
         
+    # Seed Regular User (For presentation testing)
+    if User.query.filter_by(username='student').first() is None:
+        student_user = User(
+            username='student',
+            phone='9876543210',
+            password=generate_password_hash('student123'),
+            is_admin=False
+        )
+        db.session.add(student_user)
+        db.session.commit()
+    else:
+        student_user = User.query.filter_by(username='student').first()
+
+    # Seed Products
     if Product.query.count() == 0:
         products = [
             Product(name="Premium Bansuri", price=2500.00, description="Authentic hand-made bamboo flute for classical Indian music.", image_url="/static/images/Bansuri.png"),
@@ -421,6 +439,28 @@ def seed_database():
             Product(name="Acoustic Violin", price=8999.00, description="Beautifully crafted acoustic violin.", image_url="/static/images/Violin.png")
         ]
         db.session.bulk_save_objects(products)
+        db.session.commit()
+        
+    # Seed Demo Orders for Presentation
+    if Order.query.count() == 0 and Product.query.count() > 0:
+        first_product = Product.query.first()
+        demo_order = Order(
+            user_id=student_user.id,
+            total_price=first_product.price,
+            payment_method='cash',
+            delivery_address='University Campus, Department of CS',
+            date_ordered=datetime.utcnow() - timedelta(hours=2)
+        )
+        db.session.add(demo_order)
+        db.session.flush()
+        
+        demo_item = OrderItem(
+            order_id=demo_order.id,
+            product_id=first_product.id,
+            quantity=1,
+            price_at_purchase=first_product.price
+        )
+        db.session.add(demo_item)
         db.session.commit()
 
 # ---------------- INITIALIZATION ----------------
