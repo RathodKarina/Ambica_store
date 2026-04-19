@@ -213,6 +213,23 @@ def profile():
     orders = Order.query.filter_by(user_id=current_user.id).order_by(Order.date_ordered.desc()).all()
     return render_template('profile.html', orders=orders)
 
+# ---------------- USER CANCEL ORDER ----------------
+@app.route('/user_cancel_order/<int:order_id>', methods=['POST'])
+@login_required
+def user_cancel_order(order_id):
+    order = Order.query.get_or_404(order_id)
+    if order.user_id != current_user.id:
+        flash("Unauthorized action.", "error")
+        return redirect('/profile')
+    
+    if order.status != 'Cancelled':
+        order.status = 'Cancelled'
+        order.cancellation_reason = request.form.get('reason', 'No reason provided by user')
+        db.session.commit()
+        flash("Your order has been cancelled.", "success")
+        
+    return redirect('/profile')
+
 # ---------------- LOGOUT ----------------
 @app.route('/logout')
 @login_required

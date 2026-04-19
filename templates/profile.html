@@ -56,6 +56,13 @@
                         <span style="color: var(--danger); font-weight: bold; border: 1px solid var(--danger); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">ORDER CANCELLED</span>
                         <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; max-width: 200px;"><strong>Reason:</strong> {{ order.cancellation_reason }}</p>
                     </div>
+                    {% else %}
+                    <div style="margin-top: 1rem; text-align: right;">
+                        <form action="/user_cancel_order/{{ order.id }}" method="POST" onsubmit="return userPromptCancel(this);">
+                            <input type="hidden" name="reason" class="user-reason-input">
+                            <button type="submit" class="btn-outline" style="border-color: var(--danger); color: var(--danger); padding: 0.5rem 1rem; font-size: 0.9rem;">Cancel Order</button>
+                        </form>
+                    </div>
                     {% endif %}
                 </div>
             </div>
@@ -63,5 +70,14 @@
         {% endfor %}
     {% endif %}
 </div>
+
+<script>
+function userPromptCancel(form) {
+    let reason = prompt("Why do you want to cancel your order?");
+    if (reason === null) return false;
+    form.querySelector('.user-reason-input').value = reason || 'No specific reason provided';
+    return true;
+}
+</script>
 
 {% endblock %}
