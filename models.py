@@ -13,12 +13,22 @@ class User(db.Model, UserMixin):
     session_token = db.Column(db.String(100), nullable=True)
     orders = db.relationship('Order', backref='user', lazy=True)
 
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    image_url = db.Column(db.Text, nullable=True)
+
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text, nullable=True)
     image_url = db.Column(db.Text, nullable=True)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
+    is_new = db.Column(db.Boolean, default=False)
+    is_trending = db.Column(db.Boolean, default=False)
+    
+    category = db.relationship('Category', backref='products')
 
 class Cart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,3 +58,13 @@ class OrderItem(db.Model):
     price_at_purchase = db.Column(db.Float, nullable=False)
     
     product = db.relationship('Product')
+
+class Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    message = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer, default=5)
+
+class Newsletter(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(150), unique=True, nullable=False)

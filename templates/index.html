@@ -20,44 +20,108 @@
     </div>
 </section>
 
-<!-- Overview Section -->
-<section id="overview" class="section-main" style="text-align: center; padding: 0 2rem;">
-    <h2 class="section-title">The Ambica Heritage</h2>
-    <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-main); max-width: 800px; margin: 0 auto;">
-        Since our inception, Ambica Store has been dedicated to bringing the finest, authentic musical instruments directly to your hands. Whether you are a classical virtuoso looking for the perfect Bansuri, or a modern artist seeking electric soundscapes, we craft and source our instruments with unmatched passion and precision.
-    </p>
+<!-- Promotional Banner -->
+<section class="section-main promo-banner">
+    <div class="promo-content">
+        <h2>★ Special Offer ★</h2>
+        <p>Buy 2 Get 1 Free on all Accessories!</p>
+        <a href="/products" class="btn-hero-outline" style="color: white; border-color: white;">Shop Offer</a>
+    </div>
 </section>
 
 <!-- Categories Section -->
-<section class="section-main" style="padding: 0 2rem;">
-    <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Browse Categories</h2>
-    <ul style="max-width: 800px; margin: 0 auto; font-size: 1.2rem; line-height: 2; text-align: left;">
-        <li><strong>Classical Flutes:</strong> Hand-crafted bamboo bansuris.</li>
-        <li><strong>Stringed Instruments:</strong> Guitars, violins, and traditional sitars.</li>
-        <li><strong>Percussion:</strong> Authentic tablas, dholaks, and drums.</li>
-        <li><strong>Modern Electronics:</strong> Digital wind and synth instruments.</li>
-    </ul>
+<section class="section-main">
+    <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Shop by Category</h2>
+    <div class="categories-dynamic-grid">
+        {% for category in categories %}
+        <div class="category-box">
+            <img src="{{ category.image_url }}" alt="{{ category.name }}">
+            <h3>{{ category.name }}</h3>
+        </div>
+        {% endfor %}
+    </div>
 </section>
 
-
+<!-- Trending Products Section -->
+<section class="section-main">
+    <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Trending & New Arrivals</h2>
+    <div class="products-grid">
+        {% for product in trending_products %}
+        <div class="product glass-card" style="position: relative;">
+            {% if product.is_new %}
+            <span class="badge badge-new">NEW</span>
+            {% elif product.is_trending %}
+            <span class="badge badge-trending">TRENDING</span>
+            {% endif %}
+            
+            <object data="{{ product.image_url }}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+               <img src="/static/images/placeholder.png" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
+            </object>
+            <h3>{{ product.name }}</h3>
+            <p>₹ {{ product.price }}</p>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; background: none; border: none; padding: 0; box-shadow: none;">
+                <form action="{{ url_for('main.add_to_cart', id=product.id) }}" method="POST" style="margin: 0; display: inline-block; padding: 0; background: none; border: none; box-shadow: none;">
+                    <button type="submit" class="btn">Add to Cart</button>
+                </form>
+                <a href="/product/{{ product.id }}" class="btn-outline" style="padding: 0.8rem 1.8rem; border-radius: 50px; font-weight: 700; text-transform: uppercase;">View</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
 
 <!-- Services Section -->
-<section class="section-main" style="padding: 0 2rem;">
+<section class="section-main">
     <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Why Choose Us?</h2>
-    <ul style="max-width: 800px; margin: 0 auto; font-size: 1.2rem; line-height: 2; text-align: left;">
-        <li><strong>Express Delivery:</strong> Fast, safe, and fully insured shipping.</li>
-        <li><strong>Secure Checkout:</strong> Encrypted transactions for peace of mind.</li>
-        <li><strong>Verified Quality:</strong> Every instrument is tested by professionals.</li>
-    </ul>
+    <div class="services-dynamic-grid">
+        <div class="service-box">
+            <div class="icon">💎</div>
+            <h3>Quality</h3>
+            <p>Every instrument verified.</p>
+        </div>
+        <div class="service-box">
+            <div class="icon">⚡</div>
+            <h3>Fast Delivery</h3>
+            <p>Express safe shipping.</p>
+        </div>
+        <div class="service-box">
+            <div class="icon">💰</div>
+            <h3>Affordable</h3>
+            <p>Premium quality for less.</p>
+        </div>
+        <div class="service-box">
+            <div class="icon">🔄</div>
+            <h3>Easy Returns</h3>
+            <p>Hassle-free 7 day return.</p>
+        </div>
+    </div>
 </section>
 
 <!-- Reviews Section -->
-<section class="section-main" style="margin-bottom: 4rem; padding: 0 2rem;">
+<section class="section-main">
     <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">What Our Artists Say</h2>
-    <ul style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 2; text-align: left;">
-        <li><em>"The classical bansuri I bought here is magnificent. The tuning is flawless and the wood quality is superb."</em> - Rahul K.</li>
-        <li><em>"Incredible customer support! They helped me choose the perfect beginner violin. Highly recommend Ambica Store!"</em> - Sneha P.</li>
-        <li><em>"The steel tabla set exceeds my expectations. Perfect resonance. Ordered on Monday, got it by Wednesday."</em> - Ankit S.</li>
-    </ul>
+    <div class="reviews-dynamic-grid">
+        {% for review in reviews %}
+        <div class="review-box glass-card">
+            <div class="stars">
+                {% for _ in range(review.rating) %}★{% endfor %}
+            </div>
+            <p class="msg">"{{ review.message }}"</p>
+            <h4 class="name">- {{ review.name }}</h4>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="section-main newsletter-section" style="margin-bottom: 4rem;">
+    <div class="newsletter-box">
+        <h2 style="text-align: center;">Subscribe to Our Newsletter</h2>
+        <p>Get the latest updates on new instruments and exclusive offers.</p>
+        <form action="{{ url_for('main.subscribe') }}" method="POST" class="newsletter-form">
+            <input type="email" name="email" placeholder="Enter your email address" required>
+            <button type="submit" class="btn-hero-primary">Subscribe</button>
+        </form>
+    </div>
 </section>
 {% endblock %}
