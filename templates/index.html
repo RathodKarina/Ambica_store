@@ -1,97 +1,53 @@
 {% extends 'base.html' %}
 {% block body_class %}page-home{% endblock %}
 {% block content %}
-<div style="display: flex; flex-direction: column; min-height: 75vh; justify-content: flex-end; align-items: flex-end; padding: 2rem 5%; position: relative; z-index: 20;">
-    <div class="glass-card" style="text-align: left; padding: 3rem 2.5rem; max-width: 550px; width: 100%; margin-top: auto; margin-bottom: 2rem;">
-        <h2 style="margin-bottom: 1rem; text-align: left;">Welcome to Ambica Store</h2>
-        <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">The premium destination for all your musical needs.</p>
-        <div style="display: flex; gap: 1rem;">
-            <a href="/products" class="btn">Explore Store</a>
-            <a href="/register" class="btn">Join Now</a>
-        </div>
+<div style="padding: 2rem 5%; text-align: center; margin-top: 2rem;">
+    <h2>Welcome to Ambica Store</h2>
+    <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">The premium destination for all your musical needs.</p>
+    <div style="display: flex; justify-content: center; gap: 1rem;">
+        <a href="/products" class="btn">Explore Store</a>
+        <a href="/register" class="btn">Join Now</a>
     </div>
 </div>
 
 <!-- Overview Section -->
-<section id="overview" class="section-main">
-    <div class="glass-card" style="text-align: center; padding: 3rem 2rem;">
-        <h2 class="section-title">The Ambica Heritage</h2>
-        <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-main); max-width: 800px; margin: 0 auto;">
-            Since our inception, Ambica Store has been dedicated to bringing the finest, authentic musical instruments directly to your hands. Whether you are a classical virtuoso looking for the perfect Bansuri, or a modern artist seeking electric soundscapes, we craft and source our instruments with unmatched passion and precision.
-        </p>
-    </div>
+<section id="overview" class="section-main" style="text-align: center; padding: 0 2rem;">
+    <h2 class="section-title">The Ambica Heritage</h2>
+    <p style="font-size: 1.2rem; line-height: 1.8; color: var(--text-main); max-width: 800px; margin: 0 auto;">
+        Since our inception, Ambica Store has been dedicated to bringing the finest, authentic musical instruments directly to your hands. Whether you are a classical virtuoso looking for the perfect Bansuri, or a modern artist seeking electric soundscapes, we craft and source our instruments with unmatched passion and precision.
+    </p>
 </section>
 
 <!-- Categories Section -->
-<section class="section-main">
+<section class="section-main" style="padding: 0 2rem;">
     <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Browse Categories</h2>
-    <div class="categories-grid">
-        <div class="category-card glass-card">
-            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🪈</div>
-            <h3>Classical Flutes</h3>
-            <p>Hand-crafted bamboo bansuris.</p>
-        </div>
-        <div class="category-card glass-card">
-            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🎸</div>
-            <h3>Stringed Instruments</h3>
-            <p>Guitars, violins, and traditional sitars.</p>
-        </div>
-        <div class="category-card glass-card">
-            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🥁</div>
-            <h3>Percussion</h3>
-            <p>Authentic tablas, dholaks, and drums.</p>
-        </div>
-        <div class="category-card glass-card">
-            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🎧</div>
-            <h3>Modern Electronics</h3>
-            <p>Digital wind and synth instruments.</p>
-        </div>
-    </div>
+    <ul style="max-width: 800px; margin: 0 auto; font-size: 1.2rem; line-height: 2; text-align: left;">
+        <li><strong>Classical Flutes:</strong> Hand-crafted bamboo bansuris.</li>
+        <li><strong>Stringed Instruments:</strong> Guitars, violins, and traditional sitars.</li>
+        <li><strong>Percussion:</strong> Authentic tablas, dholaks, and drums.</li>
+        <li><strong>Modern Electronics:</strong> Digital wind and synth instruments.</li>
+    </ul>
 </section>
 
 
 
 <!-- Services Section -->
-<section class="section-main">
+<section class="section-main" style="padding: 0 2rem;">
     <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Why Choose Us?</h2>
-    <div class="services-grid">
-        <div class="glass-card" style="text-align: center; padding: 2.5rem 1.5rem;">
-            <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent);">⚡</div>
-            <h3 style="margin-bottom: 0.5rem; color: var(--text-main);">Express Delivery</h3>
-            <p style="color: var(--text-muted);">Fast, safe, and fully insured shipping.</p>
-        </div>
-        <div class="glass-card" style="text-align: center; padding: 2.5rem 1.5rem;">
-            <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent);">🔒</div>
-            <h3 style="margin-bottom: 0.5rem; color: var(--text-main);">Secure Checkout</h3>
-            <p style="color: var(--text-muted);">Encrypted transactions for peace of mind.</p>
-        </div>
-        <div class="glass-card" style="text-align: center; padding: 2.5rem 1.5rem;">
-            <div style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent);">💎</div>
-            <h3 style="margin-bottom: 0.5rem; color: var(--text-main);">Verified Quality</h3>
-            <p style="color: var(--text-muted);">Every instrument is tested by professionals.</p>
-        </div>
-    </div>
+    <ul style="max-width: 800px; margin: 0 auto; font-size: 1.2rem; line-height: 2; text-align: left;">
+        <li><strong>Express Delivery:</strong> Fast, safe, and fully insured shipping.</li>
+        <li><strong>Secure Checkout:</strong> Encrypted transactions for peace of mind.</li>
+        <li><strong>Verified Quality:</strong> Every instrument is tested by professionals.</li>
+    </ul>
 </section>
 
 <!-- Reviews Section -->
-<section class="section-main" style="margin-bottom: 4rem;">
+<section class="section-main" style="margin-bottom: 4rem; padding: 0 2rem;">
     <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">What Our Artists Say</h2>
-    <div class="reviews-grid">
-        <div class="glass-card review-card">
-            <div style="color: #F59E0B; margin-bottom: 1rem; font-size: 1.4rem;">★★★★★</div>
-            <p style="font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">"The classical bansuri I bought here is magnificent. The tuning is flawless and the wood quality is superb."</p>
-            <div style="font-weight: 600; color: var(--text-main);">- Rahul K.</div>
-        </div>
-        <div class="glass-card review-card">
-            <div style="color: #F59E0B; margin-bottom: 1rem; font-size: 1.4rem;">★★★★★</div>
-            <p style="font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">"Incredible customer support! They helped me choose the perfect beginner violin. Highly recommend Ambica Store!"</p>
-            <div style="font-weight: 600; color: var(--text-main);">- Sneha P.</div>
-        </div>
-        <div class="glass-card review-card">
-            <div style="color: #F59E0B; margin-bottom: 1rem; font-size: 1.4rem;">★★★★★</div>
-            <p style="font-style: italic; margin-bottom: 1.5rem; line-height: 1.6;">"The steel tabla set exceeds my expectations. Perfect resonance. Ordered on Monday, got it by Wednesday."</p>
-            <div style="font-weight: 600; color: var(--text-main);">- Ankit S.</div>
-        </div>
-    </div>
+    <ul style="max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 2; text-align: left;">
+        <li><em>"The classical bansuri I bought here is magnificent. The tuning is flawless and the wood quality is superb."</em> - Rahul K.</li>
+        <li><em>"Incredible customer support! They helped me choose the perfect beginner violin. Highly recommend Ambica Store!"</em> - Sneha P.</li>
+        <li><em>"The steel tabla set exceeds my expectations. Perfect resonance. Ordered on Monday, got it by Wednesday."</em> - Ankit S.</li>
+    </ul>
 </section>
 {% endblock %}

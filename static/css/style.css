@@ -25,7 +25,7 @@ body {
 }
 
 body.page-home {
-  background: url('../images/bg.png') top center/100% 100% no-repeat fixed, var(--bg-color);
+  background: var(--bg-color);
 }
 
 
