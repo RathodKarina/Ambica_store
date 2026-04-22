@@ -18,6 +18,7 @@ def register():
         phone = request.form.get('phone', '')
         user = User(
             username=request.form['username'],
+            email=request.form.get('email', None),
             phone=phone,
             password=hashed_password,
             is_admin=is_admin
@@ -43,7 +44,7 @@ def login():
         return redirect('/products')
         
     if request.method == 'POST':
-        user = User.query.filter_by(username=request.form['username']).first()
+        user = User.query.filter_by(email=request.form['email']).first()
 
         if user and check_password_hash(user.password, request.form['password']):
             login_user(user, remember=True)

@@ -54,9 +54,7 @@
             <span class="badge badge-trending">TRENDING</span>
             {% endif %}
             
-            <object data="{{ product.image_url }}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-               <img src="/static/images/placeholder.png" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">
-            </object>
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 100%; height: 160px; object-fit: contain; margin-bottom: 1.5rem;">
             <h3>{{ product.name }}</h3>
             <p>₹ {{ product.price }}</p>
             <div style="display: flex; gap: 0.5rem; justify-content: center; background: none; border: none; padding: 0; box-shadow: none;">

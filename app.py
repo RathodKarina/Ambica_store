@@ -54,6 +54,7 @@ def seed_database():
     if User.query.filter_by(username='admin').first() is None:
         admin_user = User(
             username='admin',
+            email='admin@ambicastore.com',
             phone='0000000000',
             password=generate_password_hash('admin123'),
             is_admin=True
@@ -64,6 +65,7 @@ def seed_database():
     if User.query.filter_by(username='student').first() is None:
         student_user = User(
             username='student',
+            email='student@university.edu',
             phone='9876543210',
             password=generate_password_hash('student123'),
             is_admin=False
