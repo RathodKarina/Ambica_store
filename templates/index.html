@@ -4,7 +4,8 @@
 <section class="hero-section">
     <div class="hero-content">
         <h1>Feel the Rhythm of Tradition</h1>
-        <p class="subtitle">Premium handcrafted instruments curated for musicians, students, and collectors, breathing life into a centuries-old musical heritage.</p>
+        <p class="subtitle">Premium handcrafted instruments curated for musicians, students, and collectors, breathing
+            life into a centuries-old musical heritage.</p>
         <div class="hero-buttons">
             <a href="/products" class="btn-hero-primary">Shop Now</a>
             <a href="/products" class="btn-hero-outline">Explore Collection</a>
@@ -47,21 +48,30 @@
     <h2 class="section-title" style="text-align: center; margin-bottom: 2rem;">Trending & New Arrivals</h2>
     <div class="products-grid">
         {% for product in trending_products %}
-        <div class="product glass-card" style="position: relative;">
-            {% if product.is_new %}
-            <span class="badge badge-new">NEW</span>
-            {% elif product.is_trending %}
-            <span class="badge badge-trending">TRENDING</span>
-            {% endif %}
-            
-            <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 100%; height: 160px; object-fit: contain; margin-bottom: 1.5rem;">
+        <div class="product glass-card">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}"
+                style="width: 100%; height: 160px; object-fit: contain; margin-bottom: 1.5rem;">
             <h3>{{ product.name }}</h3>
+
+            {% if product.is_new %}
+            <p
+                style="font-size: 0.8rem; color: #10B981; font-weight: bold; margin-bottom: 0.5rem; letter-spacing: 1px;">
+                NEW ARRIVAL</p>
+            {% elif product.is_trending %}
+            <p
+                style="font-size: 0.8rem; color: #F59E0B; font-weight: bold; margin-bottom: 0.5rem; letter-spacing: 1px;">
+                TRENDING NOW</p>
+            {% endif %}
+
             <p>₹ {{ product.price }}</p>
-            <div style="display: flex; gap: 0.5rem; justify-content: center; background: none; border: none; padding: 0; box-shadow: none;">
-                <form action="{{ url_for('main.add_to_cart', id=product.id) }}" method="POST" style="margin: 0; display: inline-block; padding: 0; background: none; border: none; box-shadow: none;">
+            <div
+                style="display: flex; gap: 0.5rem; justify-content: center; background: none; border: none; padding: 0; box-shadow: none;">
+                <form action="{{ url_for('main.add_to_cart', id=product.id) }}" method="POST"
+                    style="margin: 0; display: inline-block; padding: 0; background: none; border: none; box-shadow: none;">
                     <button type="submit" class="btn">Add to Cart</button>
                 </form>
-                <a href="/product/{{ product.id }}" class="btn-outline" style="padding: 0.8rem 1.8rem; border-radius: 50px; font-weight: 700; text-transform: uppercase;">View</a>
+                <a href="/product/{{ product.id }}" class="btn-outline"
+                    style="padding: 0.8rem 1.8rem; border-radius: 50px; font-weight: 700; text-transform: uppercase;">View</a>
             </div>
         </div>
         {% endfor %}
