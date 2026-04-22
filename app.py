@@ -73,10 +73,10 @@ def seed_database():
 
     if Category.query.count() == 0:
         categories = [
-            Category(name="Classical Flutes", image_url="/static/images/flute_cat.png"),
-            Category(name="Stringed Instruments", image_url="/static/images/string_cat.png"),
-            Category(name="Percussion", image_url="/static/images/perc_cat.png"),
-            Category(name="Modern Electronics", image_url="/static/images/elec_cat.png")
+            Category(name="Classical Flutes", image_url="/static/images/Bansuri.png"),
+            Category(name="Stringed Instruments", image_url="/static/images/Violin.png"),
+            Category(name="Percussion", image_url="/static/images/Steel tabala.png"),
+            Category(name="Modern Electronics", image_url="/static/images/Electric Wind with Headphones.png")
         ]
         db.session.bulk_save_objects(categories)
         db.session.commit()
@@ -89,7 +89,7 @@ def seed_database():
         
         products = [
             Product(name="Premium Bansuri", price=2500.00, description="Authentic hand-made bamboo flute for classical Indian music.", image_url="/static/images/Bansuri.png", category_id=c_flute.id if c_flute else None, is_new=True, is_trending=True),
-            Product(name="Kids Musical Set", price=1200.00, description="Comfy cubs 4-pieces kids musical instrument set.", image_url="/static/images/kids_set.png", category_id=c_perc.id if c_perc else None, is_new=False, is_trending=False),
+            Product(name="Kids Musical Set", price=1200.00, description="Comfy cubs 4-pieces kids musical instrument set.", image_url="/static/images/Comfy cubs 4-pieces kids Musical Instrument.png", category_id=c_perc.id if c_perc else None, is_new=False, is_trending=True),
             Product(name="Electric Wind Instrument", price=15500.00, description="Digital electric wind instrument with headphones.", image_url="/static/images/Electric Wind with Headphones.png", category_id=c_elec.id if c_elec else None, is_new=True, is_trending=True),
             Product(name="Professional Steel Tabla", price=6500.00, description="High quality steel tabla set.", image_url="/static/images/Steel tabala.png", category_id=c_perc.id if c_perc else None, is_new=False, is_trending=True),
             Product(name="Traditional Instrument", price=4500.00, description="Classic traditional instrument for authentic sounds.", image_url="/static/images/Traditional instrument.png", category_id=c_string.id if c_string else None, is_new=False, is_trending=False),
