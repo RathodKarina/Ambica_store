@@ -111,7 +111,7 @@ def seed_database():
 
 with app.app_context():
     # Force reset database schema on Render for the new models
-    db.drop_all() 
+    # db.drop_all() # REMOVED: This was causing all your registered users to be deleted on restart!
     db.create_all()
     seed_database()
 
