@@ -192,3 +192,18 @@ def admin_delete_order(id):
         db.session.commit()
         flash("Order cancelled successfully.", "success")
     return redirect('/admin/orders')
+
+@admin_bp.route('/admin/accept_order/<int:id>', methods=['POST'])
+@login_required
+def admin_accept_order(id):
+    if not current_user.is_admin:
+        return "Access denied", 403
+    order = Order.query.get(id)
+    if order:
+        # Re-using cancellation_reason column for the admin "Review" message to avoid DB migrations
+        review_msg = request.form.get('reason', 'Order accepted.')
+        order.status = 'Accepted'
+        order.cancellation_reason = review_msg
+        db.session.commit()
+        flash("Order accepted and review sent to user.", "success")
+    return redirect('/admin/orders')

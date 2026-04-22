@@ -56,6 +56,11 @@
                         <span style="color: var(--danger); font-weight: bold; border: 1px solid var(--danger); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">ORDER CANCELLED</span>
                         <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; max-width: 200px;"><strong>Reason:</strong> {{ order.cancellation_reason }}</p>
                     </div>
+                    {% elif order.status == 'Accepted' %}
+                    <div style="margin-top: 1rem; text-align: right;">
+                        <span style="color: #10B981; font-weight: bold; border: 1px solid #10B981; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">ORDER ACCEPTED</span>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 0; display: inline-block; text-align: right;"><strong>Admin Message:</strong> {{ order.cancellation_reason }}</p>
+                    </div>
                     {% else %}
                     <div style="margin-top: 1rem; text-align: right;">
                         <form action="/user_cancel_order/{{ order.id }}" method="POST" onsubmit="return userPromptCancel(this);">
