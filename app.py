@@ -108,12 +108,8 @@ def seed_database():
         db.session.commit()
 
 with app.app_context():
-    # Since we changed columns (is_trending, etc.) on an existing SQLite db without migrate,
-    # it'll crash. The best approach for simple SQLIte without alembic:
-    import sqlite3
-    db_path = app.config['SQLALCHEMY_DATABASE_URI'].replace('sqlite:///', '')
-    if 'ambica_store.db' in db_path and os.path.exists('instance/ambica_store.db'):
-        db.drop_all() # Recreate DB for assignment to inject new schema cleanly
+    # Force reset database schema on Render for the new models
+    db.drop_all() 
     db.create_all()
     seed_database()
 
