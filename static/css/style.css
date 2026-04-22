@@ -36,33 +36,130 @@ body.page-home {
 
 
 /* Glass Navbar */
-nav {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--glass-border);
-  padding: 1rem 2rem;
+.main-navbar {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(200, 156, 76, 0.3);
+  padding: 1rem 4rem;
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  justify-content: space-between;
+  align-items: center;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
 }
 
-nav a {
-  color: var(--text-muted);
+.main-navbar .nav-brand a {
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+
+.main-navbar .nav-brand a:hover {
+  background: transparent;
+  transform: scale(1.02);
+}
+
+.main-navbar .nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.main-navbar .nav-links a {
+  color: var(--text-main);
   text-decoration: none;
   font-weight: 500;
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 0.5rem 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
 }
 
-nav a:hover {
+.main-navbar .nav-links a:hover {
+  color: var(--hero-maroon);
+  border-bottom: 2px solid var(--hero-gold);
+  background: transparent;
+}
+
+.main-navbar .nav-actions .nav-profile-link,
+.main-navbar .nav-actions .nav-login-link {
   color: var(--text-main);
-  background: var(--glass-bg);
+  text-decoration: none;
+  font-size: 1.05rem;
+  transition: color 0.3s;
+  background: transparent;
+  padding: 0.5rem 0;
+}
+
+.main-navbar .nav-actions .nav-profile-link:hover,
+.main-navbar .nav-actions .nav-login-link:hover {
+  color: var(--hero-maroon);
+}
+
+.main-navbar .nav-actions .nav-btn {
+  padding: 0.6rem 1.4rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  margin-left: 0.5rem;
+}
+
+/* Profile Dropdown Menu */
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-toggle {
+  background: transparent;
+  color: var(--hero-wood);
+  border: 2px solid var(--hero-wood);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.profile-toggle:hover {
+  background: rgba(93, 64, 55, 0.1);
+  color: var(--hero-maroon);
+}
+
+.profile-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--glass-border);
+}
+
+.profile-dropdown:hover .profile-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.profile-menu a {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.profile-menu a:hover {
+  background: rgba(200, 156, 76, 0.1);
+  color: var(--hero-maroon);
+  transform: translateX(5px);
 }
 
 .container {
