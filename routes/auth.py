@@ -44,7 +44,8 @@ def login():
         return redirect('/products')
         
     if request.method == 'POST':
-        user = User.query.filter_by(email=request.form['email']).first()
+        identifier = request.form.get('identifier', '').strip()
+        user = User.query.filter((User.email == identifier) | (User.username == identifier)).first()
 
         if user and check_password_hash(user.password, request.form['password']):
             login_user(user, remember=True)
