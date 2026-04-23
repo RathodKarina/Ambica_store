@@ -122,19 +122,23 @@ def admin_add_product():
     if not current_user.is_admin:
         return "Access denied", 403
     if request.method == 'POST':
-        image_file = request.files.get('image')
-        image_path = ''
-        if image_file and image_file.filename != '':
-            image_data = image_file.read()
-            encoded_image = base64.b64encode(image_data).decode('utf-8')
-            mime_type = image_file.mimetype
-            image_path = f"data:{mime_type};base64,{encoded_image}"
+        def process_image(file_key):
+            img_file = request.files.get(file_key)
+            if img_file and img_file.filename != '':
+                encoded = base64.b64encode(img_file.read()).decode('utf-8')
+                return f"data:{img_file.mimetype};base64,{encoded}"
+            return None
             
         product = Product(
             name=request.form['name'],
             price=float(request.form['price']),
+            price_low=float(request.form.get('price_low')) if request.form.get('price_low') else None,
+            price_premium=float(request.form.get('price_premium')) if request.form.get('price_premium') else None,
             description=request.form.get('description', ''),
-            image_url=image_path
+            image_url=process_image('image') or '',
+            image_url_black=process_image('image_black'),
+            image_url_brown=process_image('image_brown'),
+            image_url_cream=process_image('image_cream')
         )
         db.session.add(product)
         db.session.commit()
@@ -164,15 +168,32 @@ def admin_edit_product(id):
     if request.method == 'POST':
         product.name = request.form['name']
         product.price = float(request.form['price'])
+        if request.form.get('price_low'):
+            product.price_low = float(request.form['price_low'])
+        if request.form.get('price_premium'):
+            product.price_premium = float(request.form['price_premium'])
+            
         product.description = request.form.get('description', '')
         
-        image_file = request.files.get('image')
-        if image_file and image_file.filename != '':
-            image_data = image_file.read()
-            encoded_image = base64.b64encode(image_data).decode('utf-8')
-            mime_type = image_file.mimetype
-            product.image_url = f"data:{mime_type};base64,{encoded_image}"
+        def process_image(file_key):
+            img_file = request.files.get(file_key)
+            if img_file and img_file.filename != '':
+                encoded = base64.b64encode(img_file.read()).decode('utf-8')
+                return f"data:{img_file.mimetype};base64,{encoded}"
+            return None
             
+        img_default = process_image('image')
+        if img_default: product.image_url = img_default
+        
+        img_black = process_image('image_black')
+        if img_black: product.image_url_black = img_black
+        
+        img_brown = process_image('image_brown')
+        if img_brown: product.image_url_brown = img_brown
+        
+        img_cream = process_image('image_cream')
+        if img_cream: product.image_url_cream = img_cream
+
         db.session.commit()
         flash("Product updated successfully!", "success")
         return redirect('/admin/products')

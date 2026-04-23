@@ -131,6 +131,16 @@ with app.app_context():
     except Exception:
         db.session.rollback()
         
+    try:
+        db.session.execute(text("ALTER TABLE product ADD COLUMN price_low FLOAT"))
+        db.session.execute(text("ALTER TABLE product ADD COLUMN price_premium FLOAT"))
+        db.session.execute(text("ALTER TABLE product ADD COLUMN image_url_black TEXT"))
+        db.session.execute(text("ALTER TABLE product ADD COLUMN image_url_brown TEXT"))
+        db.session.execute(text("ALTER TABLE product ADD COLUMN image_url_cream TEXT"))
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        
     seed_database()
 
 if __name__ == '__main__':

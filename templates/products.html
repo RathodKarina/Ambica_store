@@ -29,10 +29,7 @@
             <div>
                 {% if p.image_url %}
                 <div style="width: 100%; height: 180px; background: rgba(0,0,0,0.02); border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: all 0.4s ease;">
-                    <div id="img-container-{{ p.id }}" style="position: relative; width: 100%; height: 100%; max-width: 90%; max-height: 90%; display: flex; justify-content: center; align-items: center;">
-                        <div id="img-overlay-{{ p.id }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; mix-blend-mode: multiply; transition: all 0.4s ease; pointer-events: none; z-index: 2; -webkit-mask-image: url('{{ p.image_url }}'); -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; mask-image: url('{{ p.image_url }}'); mask-size: contain; mask-repeat: no-repeat; mask-position: center; opacity: 0.85;"></div>
-                        <img src="{{ p.image_url }}" alt="{{ p.name }}" style="width: 100%; height: 100%; object-fit: contain; z-index: 1;">
-                    </div>
+                    <img id="product-img-{{ p.id }}" src="{{ p.image_url }}" alt="{{ p.name }}" style="width: 90%; height: 90%; object-fit: contain; z-index: 1; transition: opacity 0.2s ease;">
                 </div>
                 {% endif %}
                 <h3 style="font-size: 1.3rem;">{{ p.name }}</h3>
@@ -44,15 +41,15 @@
                 <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; justify-content: space-between;">
                     <div style="flex: 1; display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center;">
                         <label class="color-swatch-label" title="Dark Black">
-                            <input type="radio" name="color_{{ p.id }}" value="Black" checked style="display: none;" onchange="updateProductStyle('{{ p.id }}')">
+                            <input type="radio" name="color_{{ p.id }}" value="Black" checked style="display: none;" onchange="updateProductStyle('{{ p.id }}')" data-img-src="{{ p.image_url_black or p.image_url }}">
                             <img src="/static/images/Black wood.jpeg" class="swatch-img" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; cursor: pointer; transition: 0.2s;">
                         </label>
                         <label class="color-swatch-label" title="Wood Brown">
-                            <input type="radio" name="color_{{ p.id }}" value="Brown" style="display: none;" onchange="updateProductStyle('{{ p.id }}')">
+                            <input type="radio" name="color_{{ p.id }}" value="Brown" style="display: none;" onchange="updateProductStyle('{{ p.id }}')" data-img-src="{{ p.image_url_brown or p.image_url }}">
                             <img src="/static/images/Brown Wood.jpeg" class="swatch-img" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; cursor: pointer; transition: 0.2s;">
                         </label>
                         <label class="color-swatch-label" title="Light Cream">
-                            <input type="radio" name="color_{{ p.id }}" value="Cream" style="display: none;" onchange="updateProductStyle('{{ p.id }}')">
+                            <input type="radio" name="color_{{ p.id }}" value="Cream" style="display: none;" onchange="updateProductStyle('{{ p.id }}')" data-img-src="{{ p.image_url_cream or p.image_url }}">
                             <img src="/static/images/Cream wood.jpeg" class="swatch-img" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; cursor: pointer; transition: 0.2s;">
                         </label>
                     </div>
@@ -72,7 +69,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
-                    <p id="price-{{ p.id }}" data-base-price="{{ p.price }}"
+                    <p id="price-{{ p.id }}" data-base-price="{{ p.price }}" data-low-price="{{ p.price_low or (p.price * 0.8) }}" data-premium-price="{{ p.price_premium or (p.price * 1.5) }}"
                         style="color: var(--accent); font-weight: 600; font-size: 1.25rem; margin: 0;">₹{{ p.price }}
                     </p>
                     <div style="display: flex; gap: 5px;">
@@ -98,19 +95,21 @@
 
             const priceEl = document.getElementById('price-' + pid);
             const basePrice = parseFloat(priceEl.getAttribute('data-base-price'));
+            const lowPrice = parseFloat(priceEl.getAttribute('data-low-price'));
+            const premiumPrice = parseFloat(priceEl.getAttribute('data-premium-price'));
 
             if (tier === 'Low') {
                 wText.innerText = "1 Mo"; rText.innerText = "7 Days";
                 wBox.style.background = 'rgba(245, 158, 11, 0.1)';
                 wBox.style.borderColor = 'rgba(245, 158, 11, 0.3)';
                 wBox.style.color = '#fbbf24';
-                priceEl.innerText = '₹' + (basePrice * 0.8).toFixed(2);
+                priceEl.innerText = '₹' + lowPrice.toFixed(2);
             } else if (tier === 'Premium') {
                 wText.innerText = "1 Yr"; rText.innerText = "30 Days";
                 wBox.style.background = 'rgba(139, 92, 246, 0.1)';
                 wBox.style.borderColor = 'rgba(139, 92, 246, 0.3)';
                 wBox.style.color = '#a78bfa';
-                priceEl.innerText = '₹' + (basePrice * 1.5).toFixed(2);
+                priceEl.innerText = '₹' + premiumPrice.toFixed(2);
             } else {
                 wText.innerText = "6 Mo"; rText.innerText = "14 Days";
                 wBox.style.background = 'rgba(16, 185, 129, 0.1)';
@@ -120,27 +119,16 @@
             }
 
             const colorEle = document.querySelector('input[name="color_' + pid + '"]:checked');
-            const color = colorEle ? colorEle.value : 'Black';
-            const overlay = document.getElementById('img-overlay-' + pid);
-            const container = document.getElementById('img-container-' + pid);
+            const productImg = document.getElementById('product-img-' + pid);
 
-            if (overlay && container) {
-                if (color === 'Black') {
-                    overlay.style.backgroundImage = "url('/static/images/Black%20wood.jpeg')";
-                    overlay.style.backgroundColor = "transparent";
-                    container.style.boxShadow = 'none';
-                } else if (color === 'Brown') {
-                    overlay.style.backgroundImage = "url('/static/images/Brown%20Wood.jpeg')";
-                    overlay.style.backgroundColor = "transparent";
-                    container.style.boxShadow = 'none';
-                } else if (color === 'Cream') {
-                    overlay.style.backgroundImage = "url('/static/images/Cream%20wood.jpeg')";
-                    overlay.style.backgroundColor = "transparent";
-                    container.style.boxShadow = 'none';
-                } else {
-                    overlay.style.backgroundImage = "none";
-                    overlay.style.backgroundColor = "transparent";
-                    container.style.boxShadow = 'none';
+            if (productImg && colorEle) {
+                const newSrc = colorEle.getAttribute('data-img-src');
+                if (newSrc && !productImg.src.endsWith(newSrc)) {
+                    productImg.style.opacity = 0.5;
+                    setTimeout(() => {
+                       productImg.src = newSrc;
+                       productImg.style.opacity = 1;
+                    }, 150);
                 }
             }
         }
