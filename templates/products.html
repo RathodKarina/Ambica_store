@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<style>
+    .color-swatch-label input:checked + img {
+        border-color: #10b981 !important;
+        transform: scale(1.15);
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+    .swatch-img:hover {
+        transform: scale(1.1);
+    }
+</style>
+
 <h2>Premium Collection</h2>
 
 <form action="/bulk_add_to_cart" method="POST" id="bulkCartForm"
@@ -31,15 +42,19 @@
             </div>
             <div>
                 <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; justify-content: space-between;">
-                    <div style="flex: 1;">
-                        <select name="color_{{ p.id }}" id="color_{{ p.id }}"
-                            onchange="updateProductStyle('{{ p.id }}')"
-                            style="width: 100%; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
-                            <option value="Standard">Default</option>
-                            <option value="Black">Dark Black</option>
-                            <option value="Brown">Wood Brown</option>
-                            <option value="Cream">Light Cream</option>
-                        </select>
+                    <div style="flex: 1; display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center;">
+                        <label class="color-swatch-label" title="Dark Black">
+                            <input type="radio" name="color_{{ p.id }}" value="Black" checked style="display: none;" onchange="updateProductStyle('{{ p.id }}')">
+                            <img src="/static/images/Black wood.jpeg" class="swatch-img" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; cursor: pointer; transition: 0.2s;">
+                        </label>
+                        <label class="color-swatch-label" title="Wood Brown">
+                            <input type="radio" name="color_{{ p.id }}" value="Brown" style="display: none;" onchange="updateProductStyle('{{ p.id }}')">
+                            <img src="/static/images/Brown Wood.jpeg" class="swatch-img" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; cursor: pointer; transition: 0.2s;">
+                        </label>
+                        <label class="color-swatch-label" title="Light Cream">
+                            <input type="radio" name="color_{{ p.id }}" value="Cream" style="display: none;" onchange="updateProductStyle('{{ p.id }}')">
+                            <img src="/static/images/Cream wood.jpeg" class="swatch-img" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover; border: 2px solid transparent; cursor: pointer; transition: 0.2s;">
+                        </label>
                     </div>
                     <div style="flex: 1;">
                         <select name="tier_{{ p.id }}" id="tier_{{ p.id }}" onchange="updateProductStyle('{{ p.id }}')"
@@ -104,7 +119,8 @@
                 priceEl.innerText = '₹' + basePrice.toFixed(2);
             }
 
-            const color = document.getElementById('color_' + pid).value;
+            const colorEle = document.querySelector('input[name="color_' + pid + '"]:checked');
+            const color = colorEle ? colorEle.value : 'Black';
             const overlay = document.getElementById('img-overlay-' + pid);
             const container = document.getElementById('img-container-' + pid);
 
