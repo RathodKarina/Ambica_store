@@ -31,23 +31,55 @@ def product_detail(id):
 @login_required
 def add_to_cart(id):
     quantity = int(request.form.get('quantity', 1)) if request.method == 'POST' else 1
-    cart_item = Cart.query.filter_by(product_id=id, user_id=current_user.id).first()
+    color = request.form.get('color', 'Standard') if request.method == 'POST' else 'Standard'
+    tier = request.form.get('tier', 'Standard') if request.method == 'POST' else 'Standard'
+    
+    # Check if this exact product variant is already in cart
+    cart_item = Cart.query.filter_by(product_id=id, user_id=current_user.id, color=color, tier=tier).first()
     if cart_item:
         cart_item.quantity += quantity
     else:
-        cart_item = Cart(product_id=id, user_id=current_user.id, quantity=quantity)
+        cart_item = Cart(product_id=id, user_id=current_user.id, quantity=quantity, color=color, tier=tier)
         db.session.add(cart_item)
     db.session.commit()
-    flash("Added to your cart!", "success")
+    flash("Added variant to your cart!", "success")
+    return redirect('/cart')
+
+@main_bp.route('/bulk_add_to_cart', methods=['POST'])
+@login_required
+def bulk_add_to_cart():
+    product_ids = request.form.getlist('product_ids')
+    if not product_ids:
+        flash("No products selected.", "error")
+        return redirect('/products')
+        
+    for pid in product_ids:
+        pid = int(pid)
+        cart_item = Cart.query.filter_by(product_id=pid, user_id=current_user.id, color='Standard', tier='Standard').first()
+        if cart_item:
+            cart_item.quantity += 1
+        else:
+            cart_item = Cart(product_id=pid, user_id=current_user.id, quantity=1, color='Standard', tier='Standard')
+            db.session.add(cart_item)
+            
+    db.session.commit()
+    flash("Successfully added selected items to cart!", "success")
     return redirect('/cart')
 
 @main_bp.route('/cart')
 @login_required
 def cart():
     items = Cart.query.filter_by(user_id=current_user.id).all()
+    
+    tier_multipliers = {'Low': 0.8, 'Standard': 1.0, 'Premium': 1.5}
+    grand_total = 0
+    for item in items:
+        mult = tier_multipliers.get(item.tier, 1.0)
+        grand_total += (item.product.price * mult) * item.quantity
+
     last_order = Order.query.filter_by(user_id=current_user.id).order_by(Order.date_ordered.desc()).first()
     default_address = last_order.delivery_address if last_order else ""
-    return render_template('cart.html', items=items, default_address=default_address)
+    return render_template('cart.html', items=items, default_address=default_address, grand_total=grand_total, tier_multipliers=tier_multipliers)
 
 @main_bp.route('/update_cart/<int:id>', methods=['POST'])
 @login_required
@@ -79,7 +111,12 @@ def checkout():
     if not cart_items:
         return redirect('/cart')
     
-    total_price = sum(item.product.price * item.quantity for item in cart_items)
+    tier_multipliers = {'Low': 0.8, 'Standard': 1.0, 'Premium': 1.5}
+    
+    total_price = 0
+    for item in cart_items:
+        multiplier = tier_multipliers.get(item.tier, 1.0)
+        total_price += (item.product.price * multiplier) * item.quantity
     
     payment_method = request.form.get('payment_method', 'cash')
     delivery_address = request.form.get('delivery_address', '')
@@ -88,11 +125,16 @@ def checkout():
     db.session.flush()
     
     for item in cart_items:
+        multiplier = tier_multipliers.get(item.tier, 1.0)
+        final_price = item.product.price * multiplier
+        
         order_item = OrderItem(
             order_id=new_order.id,
             product_id=item.product_id,
             quantity=item.quantity,
-            price_at_purchase=item.product.price
+            price_at_purchase=final_price,
+            color=item.color,
+            tier=item.tier
         )
         db.session.add(order_item)
         db.session.delete(item)

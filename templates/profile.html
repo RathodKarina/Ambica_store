@@ -11,78 +11,95 @@
         <a href="/products" class="btn">Start Shopping</a>
     </div>
     {% else %}
-        {% for order in orders %}
-        <div class="glass-card" style="margin-bottom: 2rem;">
-            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; margin-bottom: 1rem;">
-                <div>
-                    <h3 style="font-size: 1.25rem;">Order #{{ order.id }}</h3>
-                    <p style="color: var(--accent); font-size: 0.9rem; margin-top: 0.2rem; text-transform: capitalize;">Payment: {{ order.payment_method }}</p>
-                </div>
-                <p style="color: var(--text-muted);">{{ order.date_ordered.strftime('%d %b %Y, %H:%M') }}</p>
+    {% for order in orders %}
+    <div class="glass-card" style="margin-bottom: 2rem;">
+        <div
+            style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem; margin-bottom: 1rem;">
+            <div>
+                <h3 style="font-size: 1.25rem;">Order #{{ order.id }}</h3>
+                <p style="color: var(--accent); font-size: 0.9rem; margin-top: 0.2rem; text-transform: capitalize;">
+                    Payment: {{ order.payment_method }}</p>
             </div>
-            
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem;">
-                <tr style="text-align: left; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <th style="padding: 0.5rem 0;">Item</th>
-                    <th style="padding: 0.5rem 0;">Price</th>
-                    <th style="padding: 0.5rem 0;">Qty</th>
-                    <th style="padding: 0.5rem 0; text-align: right;">Total</th>
-                </tr>
-                {% for item in order.items %}
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <td style="padding: 0.75rem 0;">{{ item.product.name }}</td>
-                    <td style="padding: 0.75rem 0;">₹{{ item.price_at_purchase }}</td>
-                    <td style="padding: 0.75rem 0;">{{ item.quantity }}</td>
-                    <td style="padding: 0.75rem 0; text-align: right;">₹{{ item.price_at_purchase * item.quantity }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-            
-            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                <div style="max-width: 60%; text-align: left;">
-                    {% if order.delivery_address %}
-                    <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 0.25rem;">Delivery Details:</h4>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4; margin-bottom: 0.5rem;">{{ order.delivery_address }}</p>
-                    {% endif %}
-                    <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4;">
-                        <strong>Name:</strong> {{ order.user.username|title }}<br>
-                        <strong>Phone:</strong> {{ order.user.phone or 'Not provided' }}
+            <p style="color: var(--text-muted);">{{ order.date_ordered.strftime('%d %b %Y, %H:%M') }}</p>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 1rem;">
+            <tr style="text-align: left; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <th style="padding: 0.5rem 0;">Item</th>
+                <th style="padding: 0.5rem 0;">Price</th>
+                <th style="padding: 0.5rem 0;">Qty</th>
+                <th style="padding: 0.5rem 0; text-align: right;">Total</th>
+            </tr>
+            {% for item in order.items %}
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 0.75rem 0;">{{ item.product.name }}</td>
+                <td style="padding: 0.75rem 0;">₹{{ item.price_at_purchase }}</td>
+                <td style="padding: 0.75rem 0;">{{ item.quantity }}</td>
+                <td style="padding: 0.75rem 0; text-align: right;">₹{{ item.price_at_purchase * item.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div style="max-width: 60%; text-align: left;">
+                {% if order.delivery_address %}
+                <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 0.25rem;">Delivery Details:</h4>
+                <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4; margin-bottom: 0.5rem;">{{
+                    order.delivery_address }}</p>
+                {% endif %}
+                <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.4;">
+                    <strong>Name:</strong> {{ order.user.username|title }}<br>
+                    <strong>Phone:</strong> {{ order.user.phone or 'Not provided' }}
+                </p>
+            </div>
+            <div style="text-align: right;">
+                <h4 style="font-size: 1.25rem; font-weight: 500;">Order Total: <span
+                        style="color: var(--accent); font-weight: 700; font-size: 1.5rem;">₹{{ order.total_price
+                        }}</span></h4>
+                {% if order.status == 'Cancelled' %}
+                <div style="margin-top: 1rem; text-align: right;">
+                    <span
+                        style="color: var(--danger); font-weight: bold; border: 1px solid var(--danger); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">ORDER
+                        CANCELLED</span>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; max-width: 200px;">
+                        <strong>Reason:</strong> {{ order.cancellation_reason }}
                     </p>
                 </div>
-                <div style="text-align: right;">
-                    <h4 style="font-size: 1.25rem; font-weight: 500;">Order Total: <span style="color: var(--accent); font-weight: 700; font-size: 1.5rem;">₹{{ order.total_price }}</span></h4>
-                    {% if order.status == 'Cancelled' %}
-                    <div style="margin-top: 1rem; text-align: right;">
-                        <span style="color: var(--danger); font-weight: bold; border: 1px solid var(--danger); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">ORDER CANCELLED</span>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; max-width: 200px;"><strong>Reason:</strong> {{ order.cancellation_reason }}</p>
-                    </div>
-                    {% elif order.status == 'Accepted' %}
-                    <div style="margin-top: 1rem; text-align: right;">
-                        <span style="color: #10B981; font-weight: bold; border: 1px solid #10B981; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">ORDER ACCEPTED</span>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 0; display: inline-block; text-align: right;"><strong>Admin Message:</strong> {{ order.cancellation_reason }}</p>
-                    </div>
-                    {% else %}
-                    <div style="margin-top: 1rem; text-align: right;">
-                        <form action="/user_cancel_order/{{ order.id }}" method="POST" onsubmit="return userPromptCancel(this);">
-                            <input type="hidden" name="reason" class="user-reason-input">
-                            <button type="submit" class="btn-outline" style="border-color: var(--danger); color: var(--danger); padding: 0.5rem 1rem; font-size: 0.9rem;">Cancel Order</button>
-                        </form>
-                    </div>
-                    {% endif %}
+                {% elif order.status == 'Accepted' %}
+                <div style="margin-top: 1rem; text-align: right;">
+                    <span
+                        style="color: #10B981; font-weight: bold; border: 1px solid #10B981; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">ORDER
+                        ACCEPTED</span>
+                    <p
+                        style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 0; display: inline-block; text-align: right;">
+                        <strong>Admin Message:</strong> {{ order.cancellation_reason }}
+                    </p>
                 </div>
+                {% else %}
+                <div style="margin-top: 1rem; text-align: right;">
+                    <form action="/user_cancel_order/{{ order.id }}" method="POST"
+                        onsubmit="return userPromptCancel(this);">
+                        <input type="hidden" name="reason" class="user-reason-input">
+                        <button type="submit" class="btn-outline"
+                            style="border-color: var(--danger); color: var(--danger); padding: 0.5rem 1rem; font-size: 0.9rem;">Cancel
+                            Order</button>
+                    </form>
+                </div>
+                {% endif %}
             </div>
         </div>
-        {% endfor %}
+    </div>
+    {% endfor %}
     {% endif %}
 </div>
 
 <script>
-function userPromptCancel(form) {
-    let reason = prompt("Why do you want to cancel your order?");
-    if (reason === null) return false;
-    form.querySelector('.user-reason-input').value = reason || 'No specific reason provided';
-    return true;
-}
+    function userPromptCancel(form) {
+        let reason = prompt("Why do you want to cancel your order?");
+        if (reason === null) return false;
+        form.querySelector('.user-reason-input').value = reason || 'No specific reason provided';
+        return true;
+    }
 </script>
 
 {% endblock %}

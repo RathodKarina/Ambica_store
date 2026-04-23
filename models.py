@@ -36,6 +36,8 @@ class Cart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     quantity = db.Column(db.Integer, default=1)
+    color = db.Column(db.String(50), default='Standard')
+    tier = db.Column(db.String(50), default='Standard')
     
     product = db.relationship('Product')
 
@@ -57,6 +59,8 @@ class OrderItem(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     price_at_purchase = db.Column(db.Float, nullable=False)
+    color = db.Column(db.String(50), nullable=True)
+    tier = db.Column(db.String(50), nullable=True)
     
     product = db.relationship('Product')
 

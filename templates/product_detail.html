@@ -18,11 +18,57 @@
     </div>
 
     {% if not current_user.is_authenticated or not current_user.is_admin %}
-    <form action="/add_to_cart/{{ product.id }}" method="POST" style="display: flex; gap: 1rem; justify-content: center; align-items: center;">
-        <a href="/products" class="btn-outline">⬅ Back</a>
-        <label for="quantity" style="color: var(--text-muted); font-size: 1.1rem; margin-left: 1rem;">Qty:</label>
-        <input type="number" name="quantity" id="quantity" value="1" min="1" style="width: 70px; background-color: rgba(255,255,255,0.6); color: var(--text-main); border: 1px solid var(--glass-border); border-radius: 8px; padding: 0.5rem; font-size: 1rem;">
-        <button type="submit" class="btn">Add to Cart</button>
+    <form action="/add_to_cart/{{ product.id }}" method="POST" style="display: flex; flex-direction: column; gap: 1rem; align-items: center;">
+        
+        <div style="display: flex; gap: 1rem; width: 100%; max-width: 500px; justify-content: space-between;">
+            <div style="flex: 1; text-align: left;">
+                <label for="color" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Color Variant:</label>
+                <select name="color" id="color" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.5rem; border-radius: 8px;">
+                    <option value="Black">Black</option>
+                    <option value="Brown">Brown</option>
+                    <option value="Cream">Cream</option>
+                </select>
+            </div>
+            <div style="flex: 1; text-align: left;">
+                <label for="tier" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Quality / Range:</label>
+                <select name="tier" id="tier" onchange="updateWarranty()" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.5rem; border-radius: 8px;">
+                    <option value="Low">Low Standard (0.8x)</option>
+                    <option value="Standard" selected>Standard (1.0x)</option>
+                    <option value="Premium">Premium Range (1.5x)</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="warranty-box" style="padding: 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; width: 100%; max-width: 500px; margin-top: 0.5rem; color: #6ee7b7;">
+            <strong>Warranty:</strong> <span id="warranty-text">6 Months</span> | <strong>Replacement:</strong> <span id="replace-text">14 Days</span>
+        </div>
+
+        <script>
+            function updateWarranty() {
+                const tier = document.getElementById('tier').value;
+                const wText = document.getElementById('warranty-text');
+                const rText = document.getElementById('replace-text');
+                if (tier === 'Low') {
+                    wText.innerText = "1 Month";
+                    rText.innerText = "7 Days";
+                } else if (tier === 'Premium') {
+                    wText.innerText = "1 Year";
+                    rText.innerText = "30 Days";
+                } else {
+                    wText.innerText = "6 Months";
+                    rText.innerText = "14 Days";
+                }
+            }
+            // Run on load to set initial state
+            document.addEventListener("DOMContentLoaded", updateWarranty);
+        </script>
+
+        <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; margin-top: 1rem;">
+            <a href="/products" class="btn-outline">⬅ Back</a>
+            <label for="quantity" style="color: var(--text-muted); font-size: 1.1rem; margin-left: 1rem;">Qty:</label>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" style="width: 70px; background-color: rgba(255,255,255,0.6); color: var(--text-main); border: 1px solid var(--glass-border); border-radius: 8px; padding: 0.5rem; font-size: 1rem;">
+            <button type="submit" class="btn">Add to Cart</button>
+        </div>
     </form>
     {% else %}
     <div style="display: flex; justify-content: center; margin-top: 1rem;">
