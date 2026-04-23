@@ -118,15 +118,15 @@ with app.app_context():
     
     # Auto-migration script to securely add columns without data loss
     try:
-        db.session.execute(text('ALTER TABLE cart ADD COLUMN color VARCHAR(50) DEFAULT "Standard"'))
-        db.session.execute(text('ALTER TABLE cart ADD COLUMN tier VARCHAR(50) DEFAULT "Standard"'))
+        db.session.execute(text("ALTER TABLE cart ADD COLUMN color VARCHAR(50) DEFAULT 'Standard'"))
+        db.session.execute(text("ALTER TABLE cart ADD COLUMN tier VARCHAR(50) DEFAULT 'Standard'"))
         db.session.commit()
     except Exception:
         db.session.rollback()
         
     try:
-        db.session.execute(text('ALTER TABLE order_item ADD COLUMN color VARCHAR(50)'))
-        db.session.execute(text('ALTER TABLE order_item ADD COLUMN tier VARCHAR(50)'))
+        db.session.execute(text("ALTER TABLE order_item ADD COLUMN color VARCHAR(50) DEFAULT 'Standard'"))
+        db.session.execute(text("ALTER TABLE order_item ADD COLUMN tier VARCHAR(50) DEFAULT 'Standard'"))
         db.session.commit()
     except Exception:
         db.session.rollback()
