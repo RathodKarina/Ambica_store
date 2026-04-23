@@ -33,7 +33,10 @@
             </tr>
             {% for item in order.items %}
             <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <td style="padding: 1rem 0; font-weight: 500;">{{ item.product.name }}</td>
+                <td style="padding: 1rem 0;">
+                    <span style="font-weight: 500;">{{ item.product.name }}</span>
+                    <br><span style="font-size: 0.85rem; color: var(--text-muted);">{{ item.color }} | {{ item.tier }} Quality</span>
+                </td>
                 <td style="padding: 1rem 0; text-align: center;">{{ item.quantity }}</td>
                 <td style="padding: 1rem 0; text-align: right;">₹{{ item.price_at_purchase * item.quantity }}</td>
             </tr>
