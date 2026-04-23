@@ -3,9 +3,11 @@
 
 <div class="glass-card" style="max-width: 800px; margin: 0 auto; text-align: center;">
     {% if product.image_url %}
-    <div id="img-container-detail" style="width: 100%; height: 400px; background: rgba(0,0,0,0.05); border-radius: 12px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: all 0.4s ease;">
-        <div id="img-overlay-detail" style="position: absolute; top:0; left:0; width:100%; height:100%; background: transparent; mix-blend-mode: multiply; transition: all 0.4s ease; pointer-events: none; z-index: 2;"></div>
-        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 90%; max-height: 90%; object-fit: contain; z-index: 1;">
+    <div style="width: 100%; height: 400px; background: rgba(0,0,0,0.05); border-radius: 12px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; overflow: hidden; transition: all 0.4s ease;">
+        <div id="img-container-detail" style="position: relative; width: 100%; height: 100%; max-width: 90%; max-height: 90%; display: flex; justify-content: center; align-items: center;">
+            <div id="img-overlay-detail" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; mix-blend-mode: multiply; transition: all 0.4s ease; pointer-events: none; z-index: 2; -webkit-mask-image: url('{{ product.image_url }}'); -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; mask-image: url('{{ product.image_url }}'); mask-size: contain; mask-repeat: no-repeat; mask-position: center; opacity: 0.85;"></div>
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: contain; z-index: 1;">
+        </div>
     </div>
     {% endif %}
 
@@ -81,16 +83,20 @@
                 
                 if (overlay && container) {
                     if (color === 'Black') {
-                        overlay.style.background = 'rgba(0, 0, 0, 0.3)';
-                        container.style.boxShadow = 'inset 0 0 40px rgba(0,0,0,0.5)';
+                        overlay.style.backgroundImage = "url('/static/images/Black%20wood.jpeg')";
+                        overlay.style.backgroundColor = "transparent";
+                        container.style.boxShadow = 'inset 0 0 40px rgba(0,0,0,0.2)';
                     } else if (color === 'Brown') {
-                        overlay.style.background = 'rgba(139, 69, 19, 0.25)';
-                        container.style.boxShadow = 'inset 0 0 40px rgba(139,69,19,0.3)';
+                        overlay.style.backgroundImage = "url('/static/images/Brown%20Wood.jpeg')";
+                        overlay.style.backgroundColor = "transparent";
+                        container.style.boxShadow = 'inset 0 0 40px rgba(139,69,19,0.2)';
                     } else if (color === 'Cream') {
-                        overlay.style.background = 'rgba(255, 253, 208, 0.4)';
-                        container.style.boxShadow = 'inset 0 0 40px rgba(255,253,208,0.5)';
+                        overlay.style.backgroundImage = "url('/static/images/Cream%20wood.jpeg')";
+                        overlay.style.backgroundColor = "transparent";
+                        container.style.boxShadow = 'inset 0 0 40px rgba(255,253,208,0.3)';
                     } else {
-                        overlay.style.background = 'transparent';
+                        overlay.style.backgroundImage = "none";
+                        overlay.style.backgroundColor = "transparent";
                         container.style.boxShadow = 'none';
                     }
                 }
