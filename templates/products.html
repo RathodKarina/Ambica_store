@@ -25,7 +25,7 @@
             <div>
                 <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; justify-content: space-between;">
                     <div style="flex: 1;">
-                        <select name="color_{{ p.id }}" id="color_{{ p.id }}" onchange="updateProductStyle({{ p.id }})" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
+                        <select name="color_{{ p.id }}" id="color_{{ p.id }}" onchange="updateProductStyle('{{ p.id }}')" style="width: 100%; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
                             <option value="Standard">Default</option>
                             <option value="Black">Dark Black</option>
                             <option value="Brown">Wood Brown</option>
@@ -33,7 +33,7 @@
                         </select>
                     </div>
                     <div style="flex: 1;">
-                        <select name="tier_{{ p.id }}" id="tier_{{ p.id }}" onchange="updateProductStyle({{ p.id }})" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
+                        <select name="tier_{{ p.id }}" id="tier_{{ p.id }}" onchange="updateProductStyle('{{ p.id }}')" style="width: 100%; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
                             <option value="Low">Low Standard</option>
                             <option value="Standard" selected>Standard</option>
                             <option value="Premium">Premium Range</option>
