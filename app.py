@@ -109,10 +109,28 @@ def seed_database():
         db.session.bulk_save_objects(reviews)
         db.session.commit()
 
+from sqlalchemy import text
+
 with app.app_context():
     # Force reset database schema on Render for the new models
     # db.drop_all() # REMOVED: This was causing all your registered users to be deleted on restart!
     db.create_all()
+    
+    # Auto-migration script to securely add columns without data loss
+    try:
+        db.session.execute(text('ALTER TABLE cart ADD COLUMN color VARCHAR(50) DEFAULT "Standard"'))
+        db.session.execute(text('ALTER TABLE cart ADD COLUMN tier VARCHAR(50) DEFAULT "Standard"'))
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        
+    try:
+        db.session.execute(text('ALTER TABLE order_item ADD COLUMN color VARCHAR(50)'))
+        db.session.execute(text('ALTER TABLE order_item ADD COLUMN tier VARCHAR(50)'))
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        
     seed_database()
 
 if __name__ == '__main__':
