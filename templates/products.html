@@ -14,24 +14,26 @@
             {% endif %}
             <div>
                 {% if p.image_url %}
-                <div style="width: 100%; aspect-ratio: 4/3; background: rgba(0,0,0,0.05); border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center;">
-                    <img src="{{ p.image_url }}" alt="{{ p.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                <div id="img-container-{{ p.id }}" style="width: 100%; height: 180px; background: rgba(0,0,0,0.02); border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: all 0.4s ease;">
+                    <div id="img-overlay-{{ p.id }}" style="position: absolute; top:0; left:0; width:100%; height:100%; background: transparent; mix-blend-mode: multiply; transition: all 0.4s ease; pointer-events: none; z-index: 2;"></div>
+                    <img src="{{ p.image_url }}" alt="{{ p.name }}" style="max-width: 90%; max-height: 90%; object-fit: contain; z-index: 1;">
                 </div>
                 {% endif %}
-                <h3>{{ p.name }}</h3>
-                <p style="font-size: 1rem; font-weight: 300;">{{ p.description[:60] }}...</p>
+                <h3 style="font-size: 1.3rem;">{{ p.name }}</h3>
+                <p style="font-size: 0.9rem; font-weight: 300; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.7rem;">{{ p.description }}</p>
             </div>
             <div>
                 <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; justify-content: space-between;">
                     <div style="flex: 1;">
-                        <select name="color_{{ p.id }}" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
-                            <option value="Black">Black</option>
-                            <option value="Brown">Brown</option>
-                            <option value="Cream">Cream</option>
+                        <select name="color_{{ p.id }}" id="color_{{ p.id }}" onchange="updateProductStyle({{ p.id }})" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
+                            <option value="Standard">Default</option>
+                            <option value="Black">Dark Black</option>
+                            <option value="Brown">Wood Brown</option>
+                            <option value="Cream">Light Cream</option>
                         </select>
                     </div>
                     <div style="flex: 1;">
-                        <select name="tier_{{ p.id }}" id="tier_{{ p.id }}" onchange="updateWarrantyHome({{ p.id }})" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
+                        <select name="tier_{{ p.id }}" id="tier_{{ p.id }}" onchange="updateProductStyle({{ p.id }})" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
                             <option value="Low">Low Standard</option>
                             <option value="Standard" selected>Standard</option>
                             <option value="Premium">Premium Range</option>
@@ -39,16 +41,16 @@
                     </div>
                 </div>
                 
-                <div id="warranty-box-{{ p.id }}" style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; font-size: 0.8rem; color: #6ee7b7; text-align: center;">
+                <div id="warranty-box-{{ p.id }}" style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; font-size: 0.8rem; color: #6ee7b7; text-align: center; transition: all 0.3s ease;">
                     Warnty: <span id="w-{{ p.id }}">6 Mo</span> | Rep: <span id="r-{{ p.id }}">14 Days</span>
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
                     <p style="color: var(--accent); font-weight: 600; font-size: 1.25rem; margin: 0;">₹{{ p.price }}</p>
                     <div style="display: flex; gap: 5px;">
-                        <a href="/product/{{ p.id }}" class="btn-outline" style="padding: 0.5rem; font-size: 0.8rem;">Details</a>
+                        <a href="/product/{{ p.id }}" class="btn-outline" style="padding: 0.4rem 0.6rem; font-size: 0.8rem;">Details</a>
                         {% if not current_user.is_authenticated or not current_user.is_admin %}
-                        <button type="submit" name="product_ids" value="{{ p.id }}" class="btn" style="padding: 0.5rem; font-size: 0.8rem;" formnovalidate>Add</button>
+                        <button type="submit" name="product_ids" value="{{ p.id }}" class="btn" style="padding: 0.4rem 0.6rem; font-size: 0.8rem;" formnovalidate>Add</button>
                         {% endif %}
                     </div>
                 </div>
@@ -58,16 +60,47 @@
     </div>
 
     <script>
-        function updateWarrantyHome(pid) {
+        function updateProductStyle(pid) {
             const tier = document.getElementById('tier_' + pid).value;
             const wText = document.getElementById('w-' + pid);
             const rText = document.getElementById('r-' + pid);
+            const wBox = document.getElementById('warranty-box-' + pid);
+            
             if (tier === 'Low') {
                 wText.innerText = "1 Mo"; rText.innerText = "7 Days";
+                wBox.style.background = 'rgba(245, 158, 11, 0.1)';
+                wBox.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                wBox.style.color = '#fbbf24';
             } else if (tier === 'Premium') {
                 wText.innerText = "1 Yr"; rText.innerText = "30 Days";
+                wBox.style.background = 'rgba(139, 92, 246, 0.1)';
+                wBox.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                wBox.style.color = '#a78bfa';
             } else {
                 wText.innerText = "6 Mo"; rText.innerText = "14 Days";
+                wBox.style.background = 'rgba(16, 185, 129, 0.1)';
+                wBox.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                wBox.style.color = '#6ee7b7';
+            }
+
+            const color = document.getElementById('color_' + pid).value;
+            const overlay = document.getElementById('img-overlay-' + pid);
+            const container = document.getElementById('img-container-' + pid);
+            
+            if (overlay && container) {
+                if (color === 'Black') {
+                    overlay.style.background = 'rgba(0, 0, 0, 0.3)';
+                    container.style.boxShadow = 'inset 0 0 20px rgba(0,0,0,0.5)';
+                } else if (color === 'Brown') {
+                    overlay.style.background = 'rgba(139, 69, 19, 0.25)';
+                    container.style.boxShadow = 'inset 0 0 20px rgba(139,69,19,0.3)';
+                } else if (color === 'Cream') {
+                    overlay.style.background = 'rgba(255, 253, 208, 0.4)';
+                    container.style.boxShadow = 'inset 0 0 20px rgba(255,253,208,0.5)';
+                } else {
+                    overlay.style.background = 'transparent';
+                    container.style.boxShadow = 'none';
+                }
             }
         }
     </script>

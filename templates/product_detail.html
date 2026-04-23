@@ -3,8 +3,9 @@
 
 <div class="glass-card" style="max-width: 800px; margin: 0 auto; text-align: center;">
     {% if product.image_url %}
-    <div style="width: 100%; height: 400px; background: rgba(0,0,0,0.05); border-radius: 12px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center;">
-        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+    <div id="img-container-detail" style="width: 100%; height: 400px; background: rgba(0,0,0,0.05); border-radius: 12px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: all 0.4s ease;">
+        <div id="img-overlay-detail" style="position: absolute; top:0; left:0; width:100%; height:100%; background: transparent; mix-blend-mode: multiply; transition: all 0.4s ease; pointer-events: none; z-index: 2;"></div>
+        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 90%; max-height: 90%; object-fit: contain; z-index: 1;">
     </div>
     {% endif %}
 
@@ -23,15 +24,16 @@
         <div style="display: flex; gap: 1rem; width: 100%; max-width: 500px; justify-content: space-between;">
             <div style="flex: 1; text-align: left;">
                 <label for="color" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Color Variant:</label>
-                <select name="color" id="color" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.5rem; border-radius: 8px;">
-                    <option value="Black">Black</option>
-                    <option value="Brown">Brown</option>
-                    <option value="Cream">Cream</option>
+                <select name="color" id="color" onchange="updateProductDetailStyle()" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.5rem; border-radius: 8px;">
+                    <option value="Standard">Default</option>
+                    <option value="Black">Dark Black</option>
+                    <option value="Brown">Wood Brown</option>
+                    <option value="Cream">Light Cream</option>
                 </select>
             </div>
             <div style="flex: 1; text-align: left;">
                 <label for="tier" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Quality / Range:</label>
-                <select name="tier" id="tier" onchange="updateWarranty()" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.5rem; border-radius: 8px;">
+                <select name="tier" id="tier" onchange="updateProductDetailStyle()" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.5rem; border-radius: 8px;">
                     <option value="Low">Low Standard (0.8x)</option>
                     <option value="Standard" selected>Standard (1.0x)</option>
                     <option value="Premium">Premium Range (1.5x)</option>
@@ -39,28 +41,56 @@
             </div>
         </div>
 
-        <div id="warranty-box" style="padding: 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; width: 100%; max-width: 500px; margin-top: 0.5rem; color: #6ee7b7;">
+        <div id="warranty-box-detail" style="padding: 1rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; width: 100%; max-width: 500px; margin-top: 0.5rem; color: #6ee7b7; transition: all 0.3s ease;">
             <strong>Warranty:</strong> <span id="warranty-text">6 Months</span> | <strong>Replacement:</strong> <span id="replace-text">14 Days</span>
         </div>
 
         <script>
-            function updateWarranty() {
+            function updateProductDetailStyle() {
                 const tier = document.getElementById('tier').value;
                 const wText = document.getElementById('warranty-text');
                 const rText = document.getElementById('replace-text');
+                const wBox = document.getElementById('warranty-box-detail');
+                
                 if (tier === 'Low') {
-                    wText.innerText = "1 Month";
-                    rText.innerText = "7 Days";
+                    wText.innerText = "1 Month"; rText.innerText = "7 Days";
+                    wBox.style.background = 'rgba(245, 158, 11, 0.1)';
+                    wBox.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                    wBox.style.color = '#fbbf24';
                 } else if (tier === 'Premium') {
-                    wText.innerText = "1 Year";
-                    rText.innerText = "30 Days";
+                    wText.innerText = "1 Year"; rText.innerText = "30 Days";
+                    wBox.style.background = 'rgba(139, 92, 246, 0.1)';
+                    wBox.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+                    wBox.style.color = '#a78bfa';
                 } else {
-                    wText.innerText = "6 Months";
-                    rText.innerText = "14 Days";
+                    wText.innerText = "6 Months"; rText.innerText = "14 Days";
+                    wBox.style.background = 'rgba(16, 185, 129, 0.1)';
+                    wBox.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                    wBox.style.color = '#6ee7b7';
+                }
+
+                const color = document.getElementById('color').value;
+                const overlay = document.getElementById('img-overlay-detail');
+                const container = document.getElementById('img-container-detail');
+                
+                if (overlay && container) {
+                    if (color === 'Black') {
+                        overlay.style.background = 'rgba(0, 0, 0, 0.3)';
+                        container.style.boxShadow = 'inset 0 0 40px rgba(0,0,0,0.5)';
+                    } else if (color === 'Brown') {
+                        overlay.style.background = 'rgba(139, 69, 19, 0.25)';
+                        container.style.boxShadow = 'inset 0 0 40px rgba(139,69,19,0.3)';
+                    } else if (color === 'Cream') {
+                        overlay.style.background = 'rgba(255, 253, 208, 0.4)';
+                        container.style.boxShadow = 'inset 0 0 40px rgba(255,253,208,0.5)';
+                    } else {
+                        overlay.style.background = 'transparent';
+                        container.style.boxShadow = 'none';
+                    }
                 }
             }
             // Run on load to set initial state
-            document.addEventListener("DOMContentLoaded", updateWarranty);
+            document.addEventListener("DOMContentLoaded", updateProductDetailStyle);
         </script>
 
         <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; margin-top: 1rem;">
