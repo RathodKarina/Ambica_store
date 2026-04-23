@@ -55,11 +55,14 @@ def bulk_add_to_cart():
         
     for pid in product_ids:
         pid = int(pid)
-        cart_item = Cart.query.filter_by(product_id=pid, user_id=current_user.id, color='Standard', tier='Standard').first()
+        color = request.form.get(f'color_{pid}', 'Standard')
+        tier = request.form.get(f'tier_{pid}', 'Standard')
+        
+        cart_item = Cart.query.filter_by(product_id=pid, user_id=current_user.id, color=color, tier=tier).first()
         if cart_item:
             cart_item.quantity += 1
         else:
-            cart_item = Cart(product_id=pid, user_id=current_user.id, quantity=1, color='Standard', tier='Standard')
+            cart_item = Cart(product_id=pid, user_id=current_user.id, quantity=1, color=color, tier=tier)
             db.session.add(cart_item)
             
     db.session.commit()

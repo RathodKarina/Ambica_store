@@ -22,17 +22,55 @@
                 <p style="font-size: 1rem; font-weight: 300;">{{ p.description[:60] }}...</p>
             </div>
             <div>
-                <p style="color: var(--accent); font-weight: 600; font-size: 1.25rem;">₹{{ p.price }}</p>
-                <div style="display: flex; gap: 10px; margin-top: 1rem;">
-                    <a href="/product/{{ p.id }}" class="btn-outline" style="flex: 1;">Details</a>
-                    {% if not current_user.is_authenticated or not current_user.is_admin %}
-                    <a href="/add_to_cart/{{ p.id }}" class="btn" style="flex: 1;">Add to Cart</a>
-                    {% endif %}
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; justify-content: space-between;">
+                    <div style="flex: 1;">
+                        <select name="color_{{ p.id }}" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
+                            <option value="Black">Black</option>
+                            <option value="Brown">Brown</option>
+                            <option value="Cream">Cream</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <select name="tier_{{ p.id }}" id="tier_{{ p.id }}" onchange="updateWarrantyHome({{ p.id }})" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.25rem; border-radius: 4px; font-size: 0.9rem;">
+                            <option value="Low">Low Standard</option>
+                            <option value="Standard" selected>Standard</option>
+                            <option value="Premium">Premium Range</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="warranty-box-{{ p.id }}" style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 4px; font-size: 0.8rem; color: #6ee7b7; text-align: center;">
+                    Warnty: <span id="w-{{ p.id }}">6 Mo</span> | Rep: <span id="r-{{ p.id }}">14 Days</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                    <p style="color: var(--accent); font-weight: 600; font-size: 1.25rem; margin: 0;">₹{{ p.price }}</p>
+                    <div style="display: flex; gap: 5px;">
+                        <a href="/product/{{ p.id }}" class="btn-outline" style="padding: 0.5rem; font-size: 0.8rem;">Details</a>
+                        {% if not current_user.is_authenticated or not current_user.is_admin %}
+                        <button type="submit" name="product_ids" value="{{ p.id }}" class="btn" style="padding: 0.5rem; font-size: 0.8rem;" formnovalidate>Add</button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
+
+    <script>
+        function updateWarrantyHome(pid) {
+            const tier = document.getElementById('tier_' + pid).value;
+            const wText = document.getElementById('w-' + pid);
+            const rText = document.getElementById('r-' + pid);
+            if (tier === 'Low') {
+                wText.innerText = "1 Mo"; rText.innerText = "7 Days";
+            } else if (tier === 'Premium') {
+                wText.innerText = "1 Yr"; rText.innerText = "30 Days";
+            } else {
+                wText.innerText = "6 Mo"; rText.innerText = "14 Days";
+            }
+        }
+    </script>
     
     {% if not current_user.is_authenticated or not current_user.is_admin %}
     <div style="position: sticky; bottom: 20px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); padding: 1rem 2rem; border-radius: 12px; margin-top: 2rem; display: flex; justify-content: space-between; align-items: center; z-index: 100;">
