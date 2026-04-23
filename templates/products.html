@@ -46,7 +46,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
-                    <p style="color: var(--accent); font-weight: 600; font-size: 1.25rem; margin: 0;">₹{{ p.price }}</p>
+                    <p id="price-{{ p.id }}" data-base-price="{{ p.price }}" style="color: var(--accent); font-weight: 600; font-size: 1.25rem; margin: 0;">₹{{ p.price }}</p>
                     <div style="display: flex; gap: 5px;">
                         <a href="/product/{{ p.id }}" class="btn-outline" style="padding: 0.4rem 0.6rem; font-size: 0.8rem;">Details</a>
                         {% if not current_user.is_authenticated or not current_user.is_admin %}
@@ -66,21 +66,27 @@
             const rText = document.getElementById('r-' + pid);
             const wBox = document.getElementById('warranty-box-' + pid);
             
+            const priceEl = document.getElementById('price-' + pid);
+            const basePrice = parseFloat(priceEl.getAttribute('data-base-price'));
+            
             if (tier === 'Low') {
                 wText.innerText = "1 Mo"; rText.innerText = "7 Days";
                 wBox.style.background = 'rgba(245, 158, 11, 0.1)';
                 wBox.style.borderColor = 'rgba(245, 158, 11, 0.3)';
                 wBox.style.color = '#fbbf24';
+                priceEl.innerText = '₹' + (basePrice * 0.8).toFixed(2);
             } else if (tier === 'Premium') {
                 wText.innerText = "1 Yr"; rText.innerText = "30 Days";
                 wBox.style.background = 'rgba(139, 92, 246, 0.1)';
                 wBox.style.borderColor = 'rgba(139, 92, 246, 0.3)';
                 wBox.style.color = '#a78bfa';
+                priceEl.innerText = '₹' + (basePrice * 1.5).toFixed(2);
             } else {
                 wText.innerText = "6 Mo"; rText.innerText = "14 Days";
                 wBox.style.background = 'rgba(16, 185, 129, 0.1)';
                 wBox.style.borderColor = 'rgba(16, 185, 129, 0.3)';
                 wBox.style.color = '#6ee7b7';
+                priceEl.innerText = '₹' + basePrice.toFixed(2);
             }
 
             const color = document.getElementById('color_' + pid).value;
@@ -89,14 +95,14 @@
             
             if (overlay && container) {
                 if (color === 'Black') {
-                    overlay.style.background = 'rgba(0, 0, 0, 0.3)';
-                    container.style.boxShadow = 'inset 0 0 20px rgba(0,0,0,0.5)';
+                    overlay.style.background = 'rgba(0, 0, 0, 0.4)';
+                    container.style.boxShadow = 'inset 0 0 40px rgba(0,0,0,0.8)';
                 } else if (color === 'Brown') {
-                    overlay.style.background = 'rgba(139, 69, 19, 0.25)';
-                    container.style.boxShadow = 'inset 0 0 20px rgba(139,69,19,0.3)';
+                    overlay.style.background = 'rgba(139, 69, 19, 0.4)';
+                    container.style.boxShadow = 'inset 0 0 40px rgba(139,69,19,0.5)';
                 } else if (color === 'Cream') {
                     overlay.style.background = 'rgba(255, 253, 208, 0.4)';
-                    container.style.boxShadow = 'inset 0 0 20px rgba(255,253,208,0.5)';
+                    container.style.boxShadow = 'inset 0 0 40px rgba(255,253,208,0.5)';
                 } else {
                     overlay.style.background = 'transparent';
                     container.style.boxShadow = 'none';

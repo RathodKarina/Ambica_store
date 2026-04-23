@@ -10,7 +10,7 @@
     {% endif %}
 
     <h2 style="margin-bottom: 1rem;">{{ product.name }}</h2>
-    <p style="font-size: 1.5rem; color: var(--accent); margin-bottom: 2rem;"><strong>Price:</strong> ₹{{ product.price }}</p>
+    <p id="price-detail" data-base-price="{{ product.price }}" style="font-size: 1.5rem; color: var(--accent); margin-bottom: 2rem;"><strong>Price:</strong> ₹{{ product.price }}</p>
 
     <div style="background: rgba(0,0,0,0.2); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; text-align: left;">
         <p style="font-size: 1.1rem; line-height: 1.6; color: var(--text-muted);">
@@ -34,9 +34,9 @@
             <div style="flex: 1; text-align: left;">
                 <label for="tier" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Quality / Range:</label>
                 <select name="tier" id="tier" onchange="updateProductDetailStyle()" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.5rem; border-radius: 8px;">
-                    <option value="Low">Low Standard (0.8x)</option>
-                    <option value="Standard" selected>Standard (1.0x)</option>
-                    <option value="Premium">Premium Range (1.5x)</option>
+                    <option value="Low">Low Standard</option>
+                    <option value="Standard" selected>Standard</option>
+                    <option value="Premium">Premium Range</option>
                 </select>
             </div>
         </div>
@@ -52,21 +52,27 @@
                 const rText = document.getElementById('replace-text');
                 const wBox = document.getElementById('warranty-box-detail');
                 
+                const priceEl = document.getElementById('price-detail');
+                const basePrice = parseFloat(priceEl.getAttribute('data-base-price'));
+                
                 if (tier === 'Low') {
                     wText.innerText = "1 Month"; rText.innerText = "7 Days";
                     wBox.style.background = 'rgba(245, 158, 11, 0.1)';
                     wBox.style.borderColor = 'rgba(245, 158, 11, 0.3)';
                     wBox.style.color = '#fbbf24';
+                    priceEl.innerHTML = "<strong>Price:</strong> ₹" + (basePrice * 0.8).toFixed(2);
                 } else if (tier === 'Premium') {
                     wText.innerText = "1 Year"; rText.innerText = "30 Days";
                     wBox.style.background = 'rgba(139, 92, 246, 0.1)';
                     wBox.style.borderColor = 'rgba(139, 92, 246, 0.3)';
                     wBox.style.color = '#a78bfa';
+                    priceEl.innerHTML = "<strong>Price:</strong> ₹" + (basePrice * 1.5).toFixed(2);
                 } else {
                     wText.innerText = "6 Months"; rText.innerText = "14 Days";
                     wBox.style.background = 'rgba(16, 185, 129, 0.1)';
                     wBox.style.borderColor = 'rgba(16, 185, 129, 0.3)';
                     wBox.style.color = '#6ee7b7';
+                    priceEl.innerHTML = "<strong>Price:</strong> ₹" + basePrice.toFixed(2);
                 }
 
                 const color = document.getElementById('color').value;
