@@ -152,6 +152,8 @@ def admin_delete_product(id):
         return "Access denied", 403
     product = Product.query.get(id)
     if product:
+        from models import OrderItem
+        OrderItem.query.filter_by(product_id=id).delete()
         Cart.query.filter_by(product_id=id).delete()
         db.session.delete(product)
         db.session.commit()
