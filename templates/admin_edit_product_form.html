@@ -31,29 +31,7 @@
         {% endif %}
     </div>
 
-    <div>
-        <label for="image_black" style="color: var(--text-muted); font-size: 0.9rem;">Black Variant Image</label>
-        <input name="image_black" id="image_black" type="file" accept="image/*" style="cursor: pointer; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px dashed var(--accent); width: 100%;">
-        {% if product.image_url_black %}
-        <p style="text-align: left; color: var(--text-muted); font-size: 0.8rem; margin-top: 5px;">Current: <img src="{{ product.image_url_black }}" style="max-height: 40px; vertical-align: middle;"></p>
-        {% endif %}
-    </div>
 
-    <div>
-        <label for="image_brown" style="color: var(--text-muted); font-size: 0.9rem;">Brown Variant Image</label>
-        <input name="image_brown" id="image_brown" type="file" accept="image/*" style="cursor: pointer; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px dashed var(--accent); width: 100%;">
-        {% if product.image_url_brown %}
-        <p style="text-align: left; color: var(--text-muted); font-size: 0.8rem; margin-top: 5px;">Current: <img src="{{ product.image_url_brown }}" style="max-height: 40px; vertical-align: middle;"></p>
-        {% endif %}
-    </div>
-
-    <div>
-        <label for="image_cream" style="color: var(--text-muted); font-size: 0.9rem;">Cream Variant Image</label>
-        <input name="image_cream" id="image_cream" type="file" accept="image/*" style="cursor: pointer; padding: 0.8rem; background: rgba(0,0,0,0.2); border: 1px dashed var(--accent); width: 100%;">
-        {% if product.image_url_cream %}
-        <p style="text-align: left; color: var(--text-muted); font-size: 0.8rem; margin-top: 5px;">Current: <img src="{{ product.image_url_cream }}" style="max-height: 40px; vertical-align: middle;"></p>
-        {% endif %}
-    </div>
 
     <div>
         <label for="description" style="color: var(--text-muted); font-size: 0.9rem;">Description</label>
