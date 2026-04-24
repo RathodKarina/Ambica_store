@@ -14,8 +14,8 @@
             <input name="price" id="price" placeholder="Standard" type="number" step="0.01" value="{{ product.price }}" required style="width: 100%; box-sizing: border-box; min-width: 0; padding: 0.8rem 0.5rem; font-size: 0.9rem;">
         </div>
         <div>
-            <label for="price_low" style="color: var(--text-muted); font-size: 0.8rem;">Low</label>
-            <input name="price_low" id="price_low" placeholder="Low" type="number" step="0.01" value="{{ product.price_low or '' }}" style="width: 100%; box-sizing: border-box; min-width: 0; padding: 0.8rem 0.5rem; font-size: 0.9rem;">
+            <label for="price_low" style="color: var(--text-muted); font-size: 0.8rem;">Base</label>
+            <input name="price_low" id="price_low" placeholder="Base" type="number" step="0.01" value="{{ product.price_low or '' }}" style="width: 100%; box-sizing: border-box; min-width: 0; padding: 0.8rem 0.5rem; font-size: 0.9rem;">
         </div>
         <div>
             <label for="price_premium" style="color: var(--text-muted); font-size: 0.8rem;">Premium</label>

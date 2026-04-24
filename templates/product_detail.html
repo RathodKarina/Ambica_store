@@ -52,7 +52,7 @@
             <div style="flex: 1; text-align: left;">
                 <label for="tier" style="display: block; margin-bottom: 0.5rem; color: var(--text-muted);">Quality / Range:</label>
                 <select name="tier" id="tier" onchange="updateProductDetailStyle()" style="width: 100%; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.5rem; border-radius: 8px;">
-                    <option value="Low">Low Standard</option>
+                    <option value="Base">Base Standard</option>
                     <option value="Standard" selected>Standard</option>
                     <option value="Premium">Premium Range</option>
                 </select>
@@ -74,7 +74,7 @@
                 const lowPrice = parseFloat(priceEl.getAttribute('data-low-price'));
                 const premiumPrice = parseFloat(priceEl.getAttribute('data-premium-price'));
                 
-                if (tier === 'Low') {
+                if (tier === 'Base') {
                     wText.innerText = "1 Month"; rText.innerText = "7 Days";
                     wBox.style.background = 'rgba(245, 158, 11, 0.1)';
                     wBox.style.borderColor = 'rgba(245, 158, 11, 0.3)';

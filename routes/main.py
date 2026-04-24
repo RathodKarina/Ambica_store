@@ -74,7 +74,7 @@ def bulk_add_to_cart():
 def cart():
     items = Cart.query.filter_by(user_id=current_user.id).all()
     
-    tier_multipliers = {'Low': 0.8, 'Standard': 1.0, 'Premium': 1.5}
+    tier_multipliers = {'Base': 0.8, 'Standard': 1.0, 'Premium': 1.5}
     grand_total = 0
     for item in items:
         mult = tier_multipliers.get(item.tier, 1.0)
@@ -114,7 +114,7 @@ def checkout():
     if not cart_items:
         return redirect('/cart')
     
-    tier_multipliers = {'Low': 0.8, 'Standard': 1.0, 'Premium': 1.5}
+    tier_multipliers = {'Base': 0.8, 'Standard': 1.0, 'Premium': 1.5}
     
     total_price = 0
     for item in cart_items:
