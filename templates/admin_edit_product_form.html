@@ -8,18 +8,18 @@
         <input name="name" id="name" placeholder="Product Name" value="{{ product.name }}" required style="width: 100%;">
     </div>
     
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
         <div>
-            <label for="price" style="color: var(--text-muted); font-size: 0.9rem;">Standard Price (₹)</label>
-            <input name="price" id="price" placeholder="Price (₹)" type="number" step="0.01" value="{{ product.price }}" required style="width: 100%; box-sizing: border-box;">
+            <label for="price" style="color: var(--text-muted); font-size: 0.8rem;">Standard</label>
+            <input name="price" id="price" placeholder="Standard" type="number" step="0.01" value="{{ product.price }}" required style="width: 100%; box-sizing: border-box; min-width: 0; padding: 0.8rem 0.5rem; font-size: 0.9rem;">
         </div>
         <div>
-            <label for="price_low" style="color: var(--text-muted); font-size: 0.9rem;">Low Range Price (₹)</label>
-            <input name="price_low" id="price_low" placeholder="Low Price" type="number" step="0.01" value="{{ product.price_low or '' }}" style="width: 100%; box-sizing: border-box;">
+            <label for="price_low" style="color: var(--text-muted); font-size: 0.8rem;">Low</label>
+            <input name="price_low" id="price_low" placeholder="Low" type="number" step="0.01" value="{{ product.price_low or '' }}" style="width: 100%; box-sizing: border-box; min-width: 0; padding: 0.8rem 0.5rem; font-size: 0.9rem;">
         </div>
         <div>
-            <label for="price_premium" style="color: var(--text-muted); font-size: 0.9rem;">Premium Price (₹)</label>
-            <input name="price_premium" id="price_premium" placeholder="Premium Price" type="number" step="0.01" value="{{ product.price_premium or '' }}" style="width: 100%; box-sizing: border-box;">
+            <label for="price_premium" style="color: var(--text-muted); font-size: 0.8rem;">Premium</label>
+            <input name="price_premium" id="price_premium" placeholder="Premium" type="number" step="0.01" value="{{ product.price_premium or '' }}" style="width: 100%; box-sizing: border-box; min-width: 0; padding: 0.8rem 0.5rem; font-size: 0.9rem;">
         </div>
     </div>
     
